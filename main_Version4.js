@@ -5,12 +5,13 @@ import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/fireb
 // ==== CONFIG ====
 // 1) Replace these with your Firebase project settings (README shows how to get them)
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+ apiKey: "AIzaSyC_4UsGZ31cNMXhwbhjynzNXgIE7ssG-V4",
+  authDomain: "wbr-app-d3807.firebaseapp.com",
+  projectId: "wbr-app-d3807",
+  storageBucket: "wbr-app-d3807.firebasestorage.app",
+  messagingSenderId: "667501588300",
+  appId: "1:667501588300:web:fd91640a1abf74cb5229e9",
+  measurementId: "G-WYCWVWWXQ6"
 };
 
 // 2) Month key (YYYY-MM). Each month writes to a new collection (soft reset).
