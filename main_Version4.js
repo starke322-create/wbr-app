@@ -1,29 +1,34 @@
 import { TARGET_METRICS, SLIDE1_SECTIONS, SLIDE2_SECTIONS, FOCUS_COMMITMENTS_ROWS } from './targets.js';
+
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+// Optionally import analytics if needed
+// import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
 
-// ==== CONFIG ====
-// 1) Replace these with your Firebase project settings (README shows how to get them)
+// Your web app's Firebase configuration
 const firebaseConfig = {
- apiKey: "AIzaSyC_4UsGZ31cNMXhwbhjynzNXgIE7ssG-V4",
+  apiKey: "AIzaSyC_4UsGZ31cNMXhwbhjynzNXgIE7ssG-V4",
   authDomain: "wbr-app-d3807.firebaseapp.com",
   projectId: "wbr-app-d3807",
-  storageBucket: "wbr-app-d3807.firebasestorage.app",
+  storageBucket: "wbr-app-d3807.appspot.com", // <-- fixed typo (.appspot.com)
   messagingSenderId: "667501588300",
   appId: "1:667501588300:web:fd91640a1abf74cb5229e9",
   measurementId: "G-WYCWVWWXQ6"
 };
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+// Optionally enable analytics (not required for Firestore)
+// const analytics = getAnalytics(app);
 
 // 2) Month key (YYYY-MM). Each month writes to a new collection (soft reset).
 const now = new Date();
 const monthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2, '0')}`;
 document.getElementById('monthKey').textContent = `Month: ${monthKey}`;
 
-// Firebase init
-const app = initializeApp(firebaseConfig);
+// Firestore DB
 const db = getFirestore(app);
-
-// Collection name is entries_{monthKey} to auto-reset monthly without deleting history
 const collectionName = `entries_${monthKey}`;
 
 // --- UI build for metrics ---
@@ -73,7 +78,6 @@ function clearActualInputs() {
 }
 
 // --- Firestore doc structure ---
-// One doc per location: { location, monthKey, weeks: { "Week 1": { metricName: actual } } }
 async function saveWeek({ location, week, actuals }) {
   const id = location.toLowerCase();
   const ref = doc(db, collectionName, id);
@@ -210,7 +214,6 @@ document.getElementById('loadProgress1').addEventListener('click', async () => {
     ["Week 1", "Week 2", "Week 3", "Week 4"],
     data
   );
-  // Load focus & commitments if present
   renderFocusCommitmentsForm(document.getElementById('focusCommitmentsForm'), data.focusCommitments);
 });
 
@@ -257,7 +260,15 @@ document.getElementById('focusCommitmentsForm').addEventListener('submit', async
   }
 });
 
-// Initial blank rendering
+// --- Section Grouping Helper ---
+function groupMetricsBySection(sections) {
+  return sections.map(section => ({
+    ...section,
+    metrics: section.metrics.map(name => TARGET_METRICS.find(m => m.name === name)).filter(Boolean)
+  }));
+}
+
+// --- Initial blank rendering ---
 renderTable(
   document.getElementById('progressBody1'),
   groupMetricsBySection(SLIDE1_SECTIONS),
