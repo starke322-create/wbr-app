@@ -5,246 +5,16 @@
   <title>Performance, Forms, Commitments</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    :root {
-      --primary-bg: #f9f9f9;
-      --primary-accent: #d32f2f;
-      --primary-border: #d1d5db;
-      --primary-radius: 8px;
-      --primary-font: 'Segoe UI', Arial, sans-serif;
-    }
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: var(--primary-bg);
-      font-family: var(--primary-font);
-      color: #222;
-      min-height: 100vh;
-    }
-    body {
-      max-width: 570px;
-      margin: 0 auto;
-      padding: 1em 0.5em 3em 0.5em;
-    }
-    h1 {
-      font-size: 1.5em;
-      margin-bottom: 1em;
-      text-align: center;
-      color: var(--primary-accent);
-      letter-spacing: 1px;
-    }
-    .red-accent {
-      color: var(--primary-accent) !important;
-    }
-    form {
-      background: #fff;
-      padding: 1.2em 1em 1.2em 1em;
-      border-radius: var(--primary-radius);
-      box-shadow: 0 2px 8px 0 #0001;
-      margin-bottom: 1.5em;
-    }
-    label {
-      display: block;
-      margin-top: 1em;
-      font-weight: 500;
-      font-size: 1em;
-    }
-    select, input[type="text"], button {
-      font-size: 1em;
-      width: 100%;
-      padding: 0.65em;
-      border: 1px solid var(--primary-border);
-      border-radius: var(--primary-radius);
-      box-sizing: border-box;
-      margin-top: 0.5em;
-      margin-bottom: 0.5em;
-      background: #fcfcfc;
-      transition: box-shadow 0.2s, border 0.2s;
-    }
-    select:focus, input[type="text"]:focus {
-      outline: none;
-      border: 1.5px solid var(--primary-accent);
-      box-shadow: 0 0 3px 1.5px #d32f2f40;
-    }
-    button {
-      background: var(--primary-accent);
-      color: #fff;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 1em;
-      margin-bottom: 0;
-      border: none;
-      transition: background 0.2s;
-      font-size: 1.05em;
-    }
-    button:hover, button:focus {
-      background: #a62828;
-    }
-    .actions {
-      display: flex;
-      gap: 0.7em;
-      margin-top: 1.2em;
-      flex-wrap: wrap;
-    }
-    .actions > button {
-      flex: 1;
-      min-width: 120px;
-    }
-    .form-metrics label {
-      margin: 0.8em 0 0.2em 0;
-      font-weight: 400;
-      font-size: 0.98em;
-    }
-    .form-metrics input[type="text"] {
-      margin-bottom: 0.1em;
-    }
-    .header-row th {
-      font-size: 1.06em;
-      letter-spacing: 0.5px;
-      padding: 0.6em 0.1em;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1em;
-      background: #fff;
-      border-radius: var(--primary-radius);
-      overflow: hidden;
-      box-shadow: 0 2px 8px 0 #0001;
-      font-size: 0.97em;
-    }
-    th, td {
-      border: 1px solid var(--primary-border);
-      padding: 0.5em 0.2em;
-      text-align: center;
-      vertical-align: middle;
-    }
-    th {
-      background: #ffebee;
-      color: var(--primary-accent);
-    }
-    #tableTitle {
-      text-align: center;
-      font-weight: 600;
-      font-size: 1.13em;
-      margin: 1.1em 0 0.2em 0;
-      color: var(--primary-accent);
-      letter-spacing: 0.6px;
-    }
-    #printMeta {
-      text-align: center;
-      margin-bottom: 12px;
-      color: #444;
-      font-size: 1em;
-    }
-    .hidden { display: none !important; }
-    @media (max-width: 700px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-      table {
-        font-size: 1em;
-      }
-      thead {
-        display: none;
-      }
-      tr {
-        margin-bottom: 1.08em;
-        background: #fff;
-        box-shadow: 0 1px 4px 0 #0001;
-        border-radius: var(--primary-radius);
-      }
-      td {
-        border: none;
-        border-bottom: 1px solid #eee;
-        position: relative;
-        padding-left: 48%;
-        text-align: left;
-        min-height: 36px;
-      }
-      td:before {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 46%;
-        padding-left: 0.6em;
-        font-weight: 600;
-        white-space: pre-wrap;
-        color: #555;
-      }
-      tr td:first-child {
-        background: #ffebee;
-        border-radius: var(--primary-radius) var(--primary-radius) 0 0;
-        font-weight: 600;
-        padding-left: 1em;
-        color: var(--primary-accent);
-        font-size: 1.08em;
-      }
-    }
-    @media (max-width: 430px) {
-      html, body {
-        padding: 0;
-      }
-      form, table {
-        border-radius: 0;
-        box-shadow: none;
-      }
-      .actions > button {
-        font-size: 0.96em;
-        min-width: 0;
-      }
-      .form-metrics label {
-        font-size: 0.96em;
-      }
-      #tableTitle {
-        font-size: 1em;
-      }
-    }
-    @media print {
-      body {
-        background: #fff;
-        color: #000;
-        max-width: none;
-        padding: 0;
-      }
-      h1, #metricsSection, .actions, .form-metrics, #backToMetrics, #clearAllData, #printTableBtn, #selectionSection, #metricsForm, button, .actions, .hidden {
-        display: none !important;
-      }
-      #tableSection, #tableTitle, #printMeta, table, thead, tbody, tr, th, td {
-        display: block !important;
-        color: #000;
-      }
-      #tableSection {
-        margin: 0;
-        padding: 0;
-      }
-      #tableTitle, #printMeta {
-        margin-top: 0;
-        margin-bottom: 6px;
-        font-size: 1.2em;
-        color: #000 !important;
-      }
-      table {
-        font-size: 0.98em;
-        margin-top: 0.3em;
-        border-radius: 0;
-        box-shadow: none;
-        width: 100%;
-      }
-      th, td {
-        color: #000 !important;
-        border: 1px solid #999 !important;
-        background: #fff !important;
-        padding: 0.35em 0.08em;
-      }
-      th {
-        color: #000 !important;
-        background: #eee !important;
-      }
-      @page {
-        size: portrait;
-        margin: 0.5in 0.3in 0.5in 0.3in;
-      }
-    }
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1, h2 { margin-bottom: 10px; }
+    .hidden { display: none; }
+    table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+    table, th, td { border: 1px solid #ccc; }
+    th, td { padding: 6px; text-align: center; }
+    .actions { margin-top: 15px; }
+    .metric-entry { margin: 8px 0; }
+    .metric-entry label { display: inline-block; width: 150px; }
+    .metric-entry input { width: 120px; margin-right: 10px; }
   </style>
   <script src="hierarchy.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -254,67 +24,30 @@
 
   <!-- Selection Page -->
   <div id="selectionSection">
-    <form id="selectionForm" autocomplete="off">
-      <label>
-        Area:
-        <select id="areaDropdown" required>
-          <option value="">--Select Area--</option>
-        </select>
-      </label>
-      <label>
-        Region:
-        <select id="regionDropdown" required disabled>
-          <option value="">--Select Region--</option>
-        </select>
-      </label>
-      <label>
-        District:
-        <select id="districtDropdown" required disabled>
-          <option value="">--Select District--</option>
-        </select>
-      </label>
-      <label>
-        Store:
-        <select id="storeDropdown" required disabled>
-          <option value="">--Select Store--</option>
-        </select>
-      </label>
-      <label>
-        Select Week: 
-        <select id="weekSelect" required>
-          <option value="">--Select Week--</option>
-          <option value="1">Week 1</option>
-          <option value="2">Week 2</option>
-          <option value="3">Week 3</option>
-          <option value="4">Week 4</option>
-          <option value="5">Week 5</option>
-        </select>
-      </label>
-      <div class="actions">
-        <button type="submit" id="nextToMetrics">Next</button>
-      </div>
-    </form>
+    <button onclick="showMetricsEntry()">Enter Data</button>
+    <button onclick="showTable()">View Table</button>
   </div>
 
   <!-- Data Entry Page -->
   <div id="metricsSection" class="hidden">
-    <form id="metricsForm" autocomplete="off">
-      <div class="form-metrics"></div>
-      <div class="actions">
-        <button type="button" id="backButton">Back</button>
-        <button type="submit" id="nextBtn">Next</button>
-      </div>
-    </form>
+    <h2>Enter Weekly Data</h2>
+    <form id="metricsForm"></form>
+    <div class="actions">
+      <button type="button" onclick="saveMetrics()">Save Entry</button>
+      <button type="button" id="resetTargets">Reset Targets</button>
+      <button type="button" onclick="backToSelection()">Back</button>
+    </div>
   </div>
 
   <!-- Data Table Page -->
   <div id="tableSection" class="hidden">
     <div id="printMeta"></div>
-    <h2 id="tableTitle"></h2>
+    <h2 id="tableTitle">Metrics Table</h2>
     <table>
       <thead>
         <tr class="header-row">
           <th>Metric</th>
+          <th>Target</th>
           <th>Week 1</th>
           <th>Week 2</th>
           <th>Week 3</th>
@@ -332,270 +65,125 @@
   </div>
 
   <script>
-    // ... (JavaScript unchanged from v23, as in your current version) ...
-    // (All JS from v23, including html2canvas print, button logic, etc.)
-    // (See previous code for full implementation.)
-    // --- Begin v23 JS ---
-    const metrics = [
-      "Trending Net GP", "Current Rank", "Current Quintile", "Bottom Metrics",
-      "GP % Target", "GP per HR", "Voice", "BTS", "TFB", "VAF",
-      "Accessories", "CSAT", "AAL Attainment"
-    ];
-    const metricFormatters = {
-      "Trending Net GP": v => formatDollarNoCents(v),
-      "GP % Target": v => formatPercentNoDecimal(v),
-      "GP per HR": v => formatDollar(v),
-      "Voice": v => formatPercentNoDecimal(v),
-      "BTS": v => formatPercentNoDecimal(v),
-      "TFB": v => formatPercentNoDecimal(v),
-      "VAF": v => formatDollar(v),
-      "Accessories": v => formatPercentNoDecimal(v),
-      "AAL Attainment": v => formatPercentNoDecimal(v),
-    };
-    function formatDollarNoCents(val) {
-      let n = parseFloat(val.replace(/[^0-9.\-]/g, "")); if (isNaN(n)) return "";
-      return "$" + Math.round(n).toLocaleString();
-    }
-    function formatDollar(val) {
-      let n = parseFloat(val.replace(/[^0-9.\-]/g, "")); if (isNaN(n)) return "";
-      return "$" + n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
-    }
-    function formatPercentNoDecimal(val) {
-      let n = parseFloat(val.replace(/[^0-9.\-]/g, ""));
-      if (isNaN(n)) return "";
-      if (n <= 1 && n !== 0) n = n*100;
-      return Math.round(n) + "%";
-    }
-
-    const selectionSection = document.getElementById('selectionSection');
-    const selectionForm = document.getElementById('selectionForm');
-    const areaDropdown = document.getElementById('areaDropdown');
-    const regionDropdown = document.getElementById('regionDropdown');
-    const districtDropdown = document.getElementById('districtDropdown');
-    const storeDropdown = document.getElementById('storeDropdown');
-    const weekSelect = document.getElementById('weekSelect');
-    const metricsSection = document.getElementById('metricsSection');
-    const metricsForm = document.getElementById('metricsForm');
-    const formMetricsDiv = metricsForm.querySelector('.form-metrics');
-    const backButton = document.getElementById('backButton');
-    const nextBtn = document.getElementById('nextBtn');
-    const tableSection = document.getElementById('tableSection');
-    const tableTitle = document.getElementById('tableTitle');
-    const printMeta = document.getElementById('printMeta');
-    const metricsTable = document.getElementById('metricsTable');
-    const backToMetricsBtn = document.getElementById('backToMetrics');
-    const clearAllDataBtn = document.getElementById('clearAllData');
-    const printTableBtn = document.getElementById('printTableBtn');
-    const tableActions = document.getElementById('tableActions');
-
-    let selectedArea = "";
-    let selectedRegion = "";
-    let selectedDistrict = "";
-    let selectedStore = "";
-    let selectedWeek = "";
-    let metricsData = {};
-    let allData = {};
-    const STORAGE_KEY = "locationPerformanceData";
-
-    function populateAreaDropdown() {
-      areaDropdown.innerHTML = '<option value="">--Select Area--</option>';
-      Object.keys(hierarchy).sort().forEach(area => {
-        areaDropdown.innerHTML += `<option value="${area}">${area}</option>`;
-      });
-      regionDropdown.disabled = true;
-      districtDropdown.disabled = true;
-      storeDropdown.disabled = true;
-      regionDropdown.innerHTML = '<option value="">--Select Region--</option>';
-      districtDropdown.innerHTML = '<option value="">--Select District--</option>';
-      storeDropdown.innerHTML = '<option value="">--Select Store--</option>';
-    }
-
-    areaDropdown.addEventListener('change', function() {
-      selectedArea = this.value;
-      regionDropdown.disabled = !selectedArea;
-      districtDropdown.disabled = true;
-      storeDropdown.disabled = true;
-      regionDropdown.innerHTML = '<option value="">--Select Region--</option>';
-      districtDropdown.innerHTML = '<option value="">--Select District--</option>';
-      storeDropdown.innerHTML = '<option value="">--Select Store--</option>';
-      if (!selectedArea) return;
-      Object.keys(hierarchy[selectedArea]).sort().forEach(region => {
-        regionDropdown.innerHTML += `<option value="${region}">${region}</option>`;
-      });
-    });
-
-    regionDropdown.addEventListener('change', function() {
-      selectedRegion = this.value;
-      districtDropdown.disabled = !selectedRegion;
-      storeDropdown.disabled = true;
-      districtDropdown.innerHTML = '<option value="">--Select District--</option>';
-      storeDropdown.innerHTML = '<option value="">--Select Store--</option>';
-      if (!selectedRegion) return;
-      Object.keys(hierarchy[selectedArea][selectedRegion]).sort().forEach(district => {
-        districtDropdown.innerHTML += `<option value="${district}">${district}</option>`;
-      });
-    });
-
-    districtDropdown.addEventListener('change', function() {
-      selectedDistrict = this.value;
-      storeDropdown.disabled = !selectedDistrict;
-      storeDropdown.innerHTML = '<option value="">--Select Store--</option>';
-      if (!selectedDistrict) return;
-      hierarchy[selectedArea][selectedRegion][selectedDistrict].sort().forEach(store => {
-        storeDropdown.innerHTML += `<option value="${store}">${store}</option>`;
-      });
-    });
-
-    storeDropdown.addEventListener('change', function() {
-      selectedStore = this.value;
-    });
-
-    function loadAllData() {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      allData = raw ? JSON.parse(raw) : {};
-    }
-    function saveAllData() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
-    }
-
-    selectionForm.onsubmit = function(e) {
-      e.preventDefault();
-      selectedArea = areaDropdown.value;
-      selectedRegion = regionDropdown.value;
-      selectedDistrict = districtDropdown.value;
-      selectedStore = storeDropdown.value;
-      selectedWeek = weekSelect.value;
-      if (!selectedArea || !selectedRegion || !selectedDistrict || !selectedStore || !selectedWeek) return;
-      loadAllData();
-      let prevValues = (allData[selectedStore] && allData[selectedStore][selectedWeek]) || {};
-      formMetricsDiv.innerHTML = metrics.map(metric =>
-        `<label>${metric}: <input type="text" name="${metric}" required value="${prevValues[metric] || ""}" autocomplete="off" /></label>`
-      ).join('');
-      selectionSection.classList.add('hidden');
-      metricsSection.classList.remove('hidden');
-      tableSection.classList.add('hidden');
+    const defaultTargets = {
+      "Net Trending GP": "",
+      "Current Rank": "86",
+      "Current Quintile": "1",
+      "Bottom Metrics": "4th/5th",
+      "GP % Target": "125%",
+      "GP per HR": "$35",
+      "Voice": "125%",
+      "BTS": "125%",
+      "TFB": "125%",
+      "VAF": "$19",
+      "Accessories": "125%",
+      "CSAT": "9.5",
+      "AAL Attainment": "125%"
     };
 
-    metricsForm.onsubmit = function(e) {
-      e.preventDefault();
-      metricsData = {};
-      metrics.forEach(metric => {
-        let raw = metricsForm.elements[metric].value;
-        metricsData[metric] = metricFormatters[metric]
-          ? metricFormatters[metric](raw)
-          : raw;
-      });
-      loadAllData();
-      if (!allData[selectedStore]) allData[selectedStore] = {};
-      allData[selectedStore][selectedWeek] = {...metricsData};
-      saveAllData();
+    let savedData = JSON.parse(localStorage.getItem("metricsData")) || {};
+    let targets = { ...defaultTargets };
+
+    function showMetricsEntry() {
+      document.getElementById("selectionSection").classList.add("hidden");
+      document.getElementById("metricsSection").classList.remove("hidden");
+      buildForm();
+    }
+
+    function showTable() {
+      document.getElementById("selectionSection").classList.add("hidden");
+      document.getElementById("tableSection").classList.remove("hidden");
       renderTable();
-    };
+    }
 
-    backButton.onclick = function() {
-      selectionSection.classList.remove('hidden');
-      metricsSection.classList.add('hidden');
-      tableSection.classList.add('hidden');
-      areaDropdown.value = selectedArea;
-      areaDropdown.dispatchEvent(new Event('change'));
-      regionDropdown.value = selectedRegion;
-      regionDropdown.dispatchEvent(new Event('change'));
-      districtDropdown.value = selectedDistrict;
-      districtDropdown.dispatchEvent(new Event('change'));
-      storeDropdown.value = selectedStore;
-      weekSelect.value = selectedWeek;
-    };
+    function backToSelection() {
+      document.getElementById("metricsSection").classList.add("hidden");
+      document.getElementById("tableSection").classList.add("hidden");
+      document.getElementById("selectionSection").classList.remove("hidden");
+    }
 
-    backToMetricsBtn.onclick = function() {
-      loadAllData();
-      let prevValues = (allData[selectedStore] && allData[selectedStore][selectedWeek]) || {};
-      metrics.forEach(metric => {
-        metricsForm.elements[metric].value = prevValues[metric] || "";
-      });
-      tableSection.classList.add('hidden');
-      metricsSection.classList.remove('hidden');
-      selectionSection.classList.add('hidden');
-    };
-
-    clearAllDataBtn.onclick = function() {
-      if (!selectedStore) {
-        alert('Please select a store.');
-        return;
+    function buildForm() {
+      const form = document.getElementById("metricsForm");
+      form.innerHTML = "";
+      for (let metric in defaultTargets) {
+        const div = document.createElement("div");
+        div.className = "metric-entry";
+        div.innerHTML = `
+          <label>${metric}:</label>
+          <input type="text" name="target-${metric}" value="${targets[metric] || ''}" placeholder="Target">
+          <input type="text" name="current-${metric}" placeholder="Current">
+        `;
+        form.appendChild(div);
       }
-      if (window.confirm("Are you sure you want to clear ALL saved data for this store?")) {
-        loadAllData();
-        if (allData[selectedStore]) {
-          delete allData[selectedStore];
-          saveAllData();
-        }
-        selectionSection.classList.remove('hidden');
-        metricsSection.classList.add('hidden');
-        tableSection.classList.add('hidden');
-        areaDropdown.value = "";
-        regionDropdown.innerHTML = '<option value="">--Select Region--</option>';
-        districtDropdown.innerHTML = '<option value="">--Select District--</option>';
-        storeDropdown.innerHTML = '<option value="">--Select Store--</option>';
-        regionDropdown.disabled = true;
-        districtDropdown.disabled = true;
-        storeDropdown.disabled = true;
-        weekSelect.value = "";
-      }
-    };
+    }
 
-    printTableBtn.onclick = function() {
-      html2canvas(tableSection).then(function(canvas) {
-        let win = window.open('', '_blank');
-        win.document.body.style.margin = "0";
-        win.document.body.style.background = "#fff";
-        win.document.body.appendChild(canvas);
-        win.document.title = "Print Table";
-        setTimeout(() => {
-          win.print();
-        }, 500);
-      });
-    };
+    function saveMetrics() {
+      const formData = new FormData(document.getElementById("metricsForm"));
+      for (let metric in defaultTargets) {
+        targets[metric] = formData.get(`target-${metric}`) || defaultTargets[metric];
+        if (!savedData[metric]) savedData[metric] = { target: targets[metric], weeks: [] };
+        savedData[metric].target = targets[metric];
+        savedData[metric].weeks.push(formData.get(`current-${metric}`));
+      }
+      localStorage.setItem("metricsData", JSON.stringify(savedData));
+      alert("Data saved!");
+    }
 
     function renderTable() {
-      loadAllData();
-      let locWeeks = allData[selectedStore] || {};
-      tableTitle.textContent = `Store: ${selectedStore}`;
-      let now = new Date();
-      let dtStr = now.toLocaleString(undefined, {
-        year: 'numeric', month: 'short', day: '2-digit',
-        hour: '2-digit', minute: '2-digit'
-      });
-      printMeta.textContent = `Area: ${selectedArea} | Region: ${selectedRegion} | District: ${selectedDistrict} | Store: ${selectedStore} | Printed: ${dtStr}`;
-      metricsTable.innerHTML = metrics.map(metric => {
-        let row = `<td>${metric}</td>`;
-        for(let i=1; i<=5; i++) {
-          row += `<td>${locWeeks[i] && locWeeks[i][metric] ? locWeeks[i][metric] : ""}</td>`;
-        }
-        return `<tr>${row}</tr>`;
-      }).join('');
-      if (window.innerWidth <= 700) {
-        let trs = metricsTable.querySelectorAll("tr");
-        trs.forEach((tr, idx) => {
-          let tds = tr.querySelectorAll("td");
-          if (tds.length === 6) {
-            let labels = ["Metric", "Week 1", "Week 2", "Week 3", "Week 4", "Week 5"];
-            tds.forEach((td, i) => {
-              td.setAttribute("data-label", labels[i]);
-              if (i !== 0) td.style.fontWeight = "400";
-            });
-          }
-        });
+      const tbody = document.getElementById("metricsTable");
+      tbody.innerHTML = "";
+      for (let metric in defaultTargets) {
+        const row = document.createElement("tr");
+        const data = savedData[metric] || { target: targets[metric], weeks: [] };
+        row.innerHTML = `
+          <td>${metric}</td>
+          <td>${data.target || ""}</td>
+          ${Array.from({ length: 5 }).map((_, i) => `<td>${data.weeks[i] || ""}</td>`).join("")}
+        `;
+        tbody.appendChild(row);
       }
-      selectionSection.classList.add('hidden');
-      metricsSection.classList.add('hidden');
-      tableSection.classList.remove('hidden');
     }
 
-    window.addEventListener('resize', function() {
-      if (!tableSection.classList.contains('hidden')) renderTable();
-    });
+    document.getElementById("resetTargets").onclick = function() {
+      targets = { ...defaultTargets };
+      buildForm();
+    };
 
-    populateAreaDropdown();
-    loadAllData();
+    document.getElementById("backToMetrics").onclick = backToSelection;
+    document.getElementById("clearAllData").onclick = function() {
+      if (confirm("Clear all saved data?")) {
+        localStorage.removeItem("metricsData");
+        savedData = {};
+        renderTable();
+      }
+    };
+
+    // Print screenshot of current tableSection
+    document.getElementById("printTableBtn").onclick = function() {
+      html2canvas(document.getElementById("tableSection")).then(function(canvas) {
+        let win = window.open("", "_blank");
+        win.document.write(`
+          <html>
+          <head>
+            <title>Print Table</title>
+            <style>
+              body { margin:0; background:#fff; width:100vw; height:100vh; }
+              .centered-print { display:flex; align-items:center; justify-content:center; height:100vh; width:100vw; }
+              canvas { max-width:90vw; max-height:90vh; display:block; margin:auto; }
+            </style>
+          </head>
+          <body>
+            <div class="centered-print" id="canvasContainer"></div>
+          </body>
+          </html>
+        `);
+        win.document.close();
+        win.onload = function() {
+          win.document.getElementById("canvasContainer").appendChild(canvas);
+          setTimeout(() => win.print(), 400);
+        };
+      });
+    };
   </script>
 </body>
 </html>
