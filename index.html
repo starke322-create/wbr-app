@@ -206,7 +206,7 @@
         max-width: none;
         padding: 0;
       }
-      h1, #metricsSection, .actions, .form-metrics, #editMetrics, #editLocation, #selectionSection, #metricsForm, button, .actions, .hidden {
+      h1, #metricsSection, .actions, .form-metrics, #backToMetrics, #clearAllData, #printTableBtn, #selectionSection, #metricsForm, button, .actions, .hidden {
         display: none !important;
       }
       #tableSection, #tableTitle, #printMeta, table, thead, tbody, tr, th, td {
@@ -248,6 +248,7 @@
   </style>
   <!-- Load the hierarchy from external JS -->
   <script src="hierarchy.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 <body>
   <h1>Performance, Forms, Commitments</h1>
@@ -325,9 +326,9 @@
       <tbody id="metricsTable"></tbody>
     </table>
     <div class="actions" id="tableActions">
-      <button id="editMetrics">Edit Inputs</button>
+      <button id="backToMetrics">Back</button>
       <button id="clearAllData">Clear All Data</button>
-      <button onclick="window.print()" type="button">Print Table</button>
+      <button id="printTableBtn" type="button">Print</button>
     </div>
   </div>
 
@@ -381,8 +382,9 @@
     const tableTitle = document.getElementById('tableTitle');
     const printMeta = document.getElementById('printMeta');
     const metricsTable = document.getElementById('metricsTable');
-    const editMetricsBtn = document.getElementById('editMetrics');
+    const backToMetricsBtn = document.getElementById('backToMetrics');
     const clearAllDataBtn = document.getElementById('clearAllData');
+    const printTableBtn = document.getElementById('printTableBtn');
     const tableActions = document.getElementById('tableActions');
 
     // State
@@ -395,7 +397,6 @@
     let allData = {};
     const STORAGE_KEY = "locationPerformanceData";
 
-    // Populate Area Dropdown
     function populateAreaDropdown() {
       areaDropdown.innerHTML = '<option value="">--Select Area--</option>';
       Object.keys(hierarchy).sort().forEach(area => {
@@ -449,7 +450,6 @@
       selectedStore = this.value;
     });
 
-    // Load all data from localStorage
     function loadAllData() {
       const raw = localStorage.getItem(STORAGE_KEY);
       allData = raw ? JSON.parse(raw) : {};
@@ -458,7 +458,6 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
     }
 
-    // Selection page submit
     selectionForm.onsubmit = function(e) {
       e.preventDefault();
       selectedArea = areaDropdown.value;
@@ -477,7 +476,6 @@
       tableSection.classList.add('hidden');
     };
 
-    // Data entry page: Next button submits data and goes to table
     metricsForm.onsubmit = function(e) {
       e.preventDefault();
       metricsData = {};
@@ -494,7 +492,6 @@
       renderTable();
     };
 
-    // Back button returns to selection page
     backButton.onclick = function() {
       selectionSection.classList.remove('hidden');
       metricsSection.classList.add('hidden');
@@ -509,43 +506,8 @@
       weekSelect.value = selectedWeek;
     };
 
-    function renderTable() {
-      loadAllData();
-      let locWeeks = allData[selectedStore] || {};
-      tableTitle.textContent = `Store: ${selectedStore}`;
-      // Print meta: location, date and time (local)
-      let now = new Date();
-      let dtStr = now.toLocaleString(undefined, {
-        year: 'numeric', month: 'short', day: '2-digit',
-        hour: '2-digit', minute: '2-digit'
-      });
-      printMeta.textContent = `Area: ${selectedArea} | Region: ${selectedRegion} | District: ${selectedDistrict} | Store: ${selectedStore} | Printed: ${dtStr}`;
-      metricsTable.innerHTML = metrics.map(metric => {
-        let row = `<td>${metric}</td>`;
-        for(let i=1; i<=5; i++) {
-          row += `<td>${locWeeks[i] && locWeeks[i][metric] ? locWeeks[i][metric] : ""}</td>`;
-        }
-        return `<tr>${row}</tr>`;
-      }).join('');
-      if (window.innerWidth <= 700) {
-        let trs = metricsTable.querySelectorAll("tr");
-        trs.forEach((tr, idx) => {
-          let tds = tr.querySelectorAll("td");
-          if (tds.length === 6) {
-            let labels = ["Metric", "Week 1", "Week 2", "Week 3", "Week 4", "Week 5"];
-            tds.forEach((td, i) => {
-              td.setAttribute("data-label", labels[i]);
-              if (i !== 0) td.style.fontWeight = "400";
-            });
-          }
-        });
-      }
-      selectionSection.classList.add('hidden');
-      metricsSection.classList.add('hidden');
-      tableSection.classList.remove('hidden');
-    }
-
-    editMetricsBtn.onclick = function() {
+    // Table page: Back button goes to metrics entry
+    backToMetricsBtn.onclick = function() {
       loadAllData();
       let prevValues = (allData[selectedStore] && allData[selectedStore][selectedWeek]) || {};
       metrics.forEach(metric => {
@@ -581,11 +543,59 @@
       }
     };
 
+    // Print screenshot of current tableSection
+    printTableBtn.onclick = function() {
+      html2canvas(tableSection).then(function(canvas) {
+        let win = window.open('', '_blank');
+        win.document.body.style.margin = "0";
+        win.document.body.style.background = "#fff";
+        win.document.body.appendChild(canvas);
+        win.document.title = "Print Table";
+        setTimeout(() => {
+          win.print();
+        }, 500);
+      });
+    };
+
+    function renderTable() {
+      loadAllData();
+      let locWeeks = allData[selectedStore] || {};
+      tableTitle.textContent = `Store: ${selectedStore}`;
+      let now = new Date();
+      let dtStr = now.toLocaleString(undefined, {
+        year: 'numeric', month: 'short', day: '2-digit',
+        hour: '2-digit', minute: '2-digit'
+      });
+      printMeta.textContent = `Area: ${selectedArea} | Region: ${selectedRegion} | District: ${selectedDistrict} | Store: ${selectedStore} | Printed: ${dtStr}`;
+      metricsTable.innerHTML = metrics.map(metric => {
+        let row = `<td>${metric}</td>`;
+        for(let i=1; i<=5; i++) {
+          row += `<td>${locWeeks[i] && locWeeks[i][metric] ? locWeeks[i][metric] : ""}</td>`;
+        }
+        return `<tr>${row}</tr>`;
+      }).join('');
+      if (window.innerWidth <= 700) {
+        let trs = metricsTable.querySelectorAll("tr");
+        trs.forEach((tr, idx) => {
+          let tds = tr.querySelectorAll("td");
+          if (tds.length === 6) {
+            let labels = ["Metric", "Week 1", "Week 2", "Week 3", "Week 4", "Week 5"];
+            tds.forEach((td, i) => {
+              td.setAttribute("data-label", labels[i]);
+              if (i !== 0) td.style.fontWeight = "400";
+            });
+          }
+        });
+      }
+      selectionSection.classList.add('hidden');
+      metricsSection.classList.add('hidden');
+      tableSection.classList.remove('hidden');
+    }
+
     window.addEventListener('resize', function() {
       if (!tableSection.classList.contains('hidden')) renderTable();
     });
 
-    // On page load
     populateAreaDropdown();
     loadAllData();
   </script>
