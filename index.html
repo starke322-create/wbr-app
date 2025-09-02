@@ -246,12 +246,11 @@
       }
     }
   </style>
-  <!-- Load the hierarchy from external JS -->
   <script src="hierarchy.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 <body>
-  <h1>Performance, Forms, Commitments</h1>
+  <h1>Weekly Business Review</h1>
 
   <!-- Selection Page -->
   <div id="selectionSection">
@@ -333,7 +332,10 @@
   </div>
 
   <script>
-    // Metrics and formatting
+    // ... (JavaScript unchanged from v23, as in your current version) ...
+    // (All JS from v23, including html2canvas print, button logic, etc.)
+    // (See previous code for full implementation.)
+    // --- Begin v23 JS ---
     const metrics = [
       "Trending Net GP", "Current Rank", "Current Quintile", "Bottom Metrics",
       "GP % Target", "GP per HR", "Voice", "BTS", "TFB", "VAF",
@@ -365,7 +367,6 @@
       return Math.round(n) + "%";
     }
 
-    // Elements
     const selectionSection = document.getElementById('selectionSection');
     const selectionForm = document.getElementById('selectionForm');
     const areaDropdown = document.getElementById('areaDropdown');
@@ -387,7 +388,6 @@
     const printTableBtn = document.getElementById('printTableBtn');
     const tableActions = document.getElementById('tableActions');
 
-    // State
     let selectedArea = "";
     let selectedRegion = "";
     let selectedDistrict = "";
@@ -506,7 +506,6 @@
       weekSelect.value = selectedWeek;
     };
 
-    // Table page: Back button goes to metrics entry
     backToMetricsBtn.onclick = function() {
       loadAllData();
       let prevValues = (allData[selectedStore] && allData[selectedStore][selectedWeek]) || {};
@@ -543,7 +542,6 @@
       }
     };
 
-    // Print screenshot of current tableSection
     printTableBtn.onclick = function() {
       html2canvas(tableSection).then(function(canvas) {
         let win = window.open('', '_blank');
