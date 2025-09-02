@@ -3,19 +3,190 @@
 <head>
   <meta charset="UTF-8" />
   <title>Performance, Forms, Commitments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body { font-family: Arial, sans-serif; margin: 2em; }
-    h1 { margin-bottom: 1em; }
-    .hidden { display: none; }
-    table { border-collapse: collapse; margin-top: 2em; min-width: 600px; }
-    th, td { border: 1px solid #ccc; padding: 0.5em 1em; text-align: center; }
-    th { background: #f0f0f0; }
-    label { display: block; margin-top: 1em; }
-    select, input[type="text"] { width: 280px; }
-    button { margin-top: 2em; }
-    .form-metrics { margin-top: 2em; }
-    .header-row th { font-size: 1.1em; }
-    .actions { margin-top: 1.5em; }
+    :root {
+      --primary-bg: #f9f9f9;
+      --primary-accent: #0366d6;
+      --primary-border: #d1d5db;
+      --primary-radius: 8px;
+      --primary-font: 'Segoe UI', Arial, sans-serif;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--primary-bg);
+      font-family: var(--primary-font);
+      color: #222;
+      min-height: 100vh;
+    }
+    body {
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 1em 0.5em 3em 0.5em;
+    }
+    h1 {
+      font-size: 1.5em;
+      margin-bottom: 1em;
+      text-align: center;
+      color: var(--primary-accent);
+      letter-spacing: 1px;
+    }
+    form {
+      background: #fff;
+      padding: 1.2em 1em 1.2em 1em;
+      border-radius: var(--primary-radius);
+      box-shadow: 0 2px 8px 0 #0001;
+      margin-bottom: 1.5em;
+    }
+    label {
+      display: block;
+      margin-top: 1em;
+      font-weight: 500;
+      font-size: 1em;
+    }
+    select, input[type="text"], button {
+      font-size: 1em;
+      width: 100%;
+      padding: 0.65em;
+      border: 1px solid var(--primary-border);
+      border-radius: var(--primary-radius);
+      box-sizing: border-box;
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+      background: #fcfcfc;
+      transition: box-shadow 0.2s, border 0.2s;
+    }
+    select:focus, input[type="text"]:focus {
+      outline: none;
+      border: 1.5px solid var(--primary-accent);
+      box-shadow: 0 0 3px 1.5px #0366d640;
+    }
+    button {
+      background: var(--primary-accent);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1em;
+      margin-bottom: 0;
+      border: none;
+      transition: background 0.2s;
+    }
+    button:hover, button:focus {
+      background: #024d9a;
+    }
+    .actions {
+      display: flex;
+      gap: 0.7em;
+      margin-top: 1.2em;
+      flex-wrap: wrap;
+    }
+    .actions > button {
+      flex: 1;
+      min-width: 120px;
+    }
+    .form-metrics label {
+      margin: 0.8em 0 0.2em 0;
+      font-weight: 400;
+      font-size: 0.98em;
+    }
+    .form-metrics input[type="text"] {
+      margin-bottom: 0.1em;
+    }
+    .header-row th {
+      font-size: 1.06em;
+      letter-spacing: 0.5px;
+      padding: 0.6em 0.1em;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1em;
+      background: #fff;
+      border-radius: var(--primary-radius);
+      overflow: hidden;
+      box-shadow: 0 2px 8px 0 #0001;
+      font-size: 0.97em;
+    }
+    th, td {
+      border: 1px solid var(--primary-border);
+      padding: 0.5em 0.2em;
+      text-align: center;
+      vertical-align: middle;
+    }
+    th {
+      background: #f3f6fa;
+    }
+    #tableTitle {
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.13em;
+      margin: 1.1em 0 0.2em 0;
+      color: var(--primary-accent);
+      letter-spacing: 0.6px;
+    }
+    @media (max-width: 700px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      table {
+        font-size: 1em;
+      }
+      thead {
+        display: none;
+      }
+      tr {
+        margin-bottom: 1.08em;
+        background: #fff;
+        box-shadow: 0 1px 4px 0 #0001;
+        border-radius: var(--primary-radius);
+      }
+      td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 48%;
+        text-align: left;
+        min-height: 36px;
+      }
+      td:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 46%;
+        padding-left: 0.6em;
+        font-weight: 600;
+        white-space: pre-wrap;
+        color: #555;
+      }
+      tr td:first-child {
+        background: #f3f6fa;
+        border-radius: var(--primary-radius) var(--primary-radius) 0 0;
+        font-weight: 600;
+        padding-left: 1em;
+        color: var(--primary-accent);
+        font-size: 1.08em;
+      }
+    }
+    @media (max-width: 430px) {
+      html, body {
+        padding: 0;
+      }
+      form, table {
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .actions > button {
+        font-size: 0.96em;
+        min-width: 0;
+      }
+      .form-metrics label {
+        font-size: 0.96em;
+      }
+      #tableTitle {
+        font-size: 1em;
+      }
+    }
   </style>
 </head>
 <body>
@@ -28,7 +199,443 @@
         Location:
         <select id="locationDropdown" required>
           <option value="">--Select Location--</option>
-          <!-- (Your location options here. Omitted for brevity, use your previous list.) -->
+          <option value="4BST: Veterans">4BST: Veterans</option>
+          <option value="1357: Richardson TX">1357: Richardson TX</option>
+          <option value="2064: Gentilly">2064: Gentilly</option>
+          <option value="0526: Desert">0526: Desert</option>
+          <option value="1449: Broadway">1449: Broadway</option>
+          <option value="1627: Marbach">1627: Marbach</option>
+          <option value="2536: Cooper Street">2536: Cooper Street</option>
+          <option value="187F: College Point">187F: College Point</option>
+          <option value="2961: Laveen">2961: Laveen</option>
+          <option value="849C: George Washington">849C: George Washington</option>
+          <option value="0115: Rufe Snow">0115: Rufe Snow</option>
+          <option value="1742: Lakeview">1742: Lakeview</option>
+          <option value="4ASN: Jeff City">4ASN: Jeff City</option>
+          <option value="1FSZ: S. Georgia">1FSZ: S. Georgia</option>
+          <option value="2066: Mason">2066: Mason</option>
+          <option value="2776: Frederick">2776: Frederick</option>
+          <option value="4GSI: Bergenline">4GSI: Bergenline</option>
+          <option value="5431: 99th Avenue">5431: 99th Avenue</option>
+          <option value="1TSZ: River Oaks">1TSZ: River Oaks</option>
+          <option value="2030: Apache">2030: Apache</option>
+          <option value="2074: Rigsby Avenue">2074: Rigsby Avenue</option>
+          <option value="4CSY: Russellville">4CSY: Russellville</option>
+          <option value="2HSF: Winder">2HSF: Winder</option>
+          <option value="2ISN: Lowes Village">2ISN: Lowes Village</option>
+          <option value="2ISW: Apopka">2ISW: Apopka</option>
+          <option value="4781: Market Place">4781: Market Place</option>
+          <option value="5ESI: Highpointe">5ESI: Highpointe</option>
+          <option value="5HSJ: Waterview">5HSJ: Waterview</option>
+          <option value="1FSH: Manor">1FSH: Manor</option>
+          <option value="1TSF: Dallas Pkwy">1TSF: Dallas Pkwy</option>
+          <option value="259E: Bay City">259E: Bay City</option>
+          <option value="345D: Methuen">345D: Methuen</option>
+          <option value="4789: Owen Garriott">4789: Owen Garriott</option>
+          <option value="5JSI: Seminole">5JSI: Seminole</option>
+          <option value="5LSV: Rangeline">5LSV: Rangeline</option>
+          <option value="990F: Wrangler">990F: Wrangler</option>
+          <option value="0118: Eastchase">0118: Eastchase</option>
+          <option value="1JSN: Red Mountain">1JSN: Red Mountain</option>
+          <option value="2242: Washington">2242: Washington</option>
+          <option value="3DSM: Muncie">3DSM: Muncie</option>
+          <option value="407D: Ponca City">407D: Ponca City</option>
+          <option value="573E: Malden">573E: Malden</option>
+          <option value="1994: Northern Avenue">1994: Northern Avenue</option>
+          <option value="1ESF: SW Military">1ESF: SW Military</option>
+          <option value="1WSO: Tucson Fashion Park">1WSO: Tucson Fashion Park</option>
+          <option value="2232: Bellaire">2232: Bellaire</option>
+          <option value="2819: Walnut">2819: Walnut</option>
+          <option value="2FSW: Chapel Hill">2FSW: Chapel Hill</option>
+          <option value="2GSM: Peachtree City">2GSM: Peachtree City</option>
+          <option value="4832: Union">4832: Union</option>
+          <option value="5518: Springhurst">5518: Springhurst</option>
+          <option value="5DSZ: Peoria">5DSZ: Peoria</option>
+          <option value="6ESE: New Circle">6ESE: New Circle</option>
+          <option value="1FSC: Buda">1FSC: Buda</option>
+          <option value="2584: North Conway">2584: North Conway</option>
+          <option value="2FSZ: Rome">2FSZ: Rome</option>
+          <option value="2XSO: Muskegon">2XSO: Muskegon</option>
+          <option value="4LSV: Ridgewood">4LSV: Ridgewood</option>
+          <option value="5333: Prescott Valley East">5333: Prescott Valley East</option>
+          <option value="5685: Combs">5685: Combs</option>
+          <option value="1564: Ozone Park">1564: Ozone Park</option>
+          <option value="1TST: Tomball">1TST: Tomball</option>
+          <option value="1USD: Magnolia">1USD: Magnolia</option>
+          <option value="2173: Mcdowell">2173: Mcdowell</option>
+          <option value="2ESP: Dacula">2ESP: Dacula</option>
+          <option value="2FSU: Cartersville">2FSU: Cartersville</option>
+          <option value="3ASX: Oregon">3ASX: Oregon</option>
+          <option value="4MSD: Baisley Blvd">4MSD: Baisley Blvd</option>
+          <option value="5ESV: Grand Junction">5ESV: Grand Junction</option>
+          <option value="687E: Peoria Ave">687E: Peoria Ave</option>
+          <option value="705D: Midland">705D: Midland</option>
+          <option value="1DSU: Bryan">1DSU: Bryan</option>
+          <option value="1USH: Sawdust">1USH: Sawdust</option>
+          <option value="1WSJ: 303 & Waddell">1WSJ: 303 & Waddell</option>
+          <option value="2GSA: Villa Rica">2GSA: Villa Rica</option>
+          <option value="2HSP: Savannah Crossing">2HSP: Savannah Crossing</option>
+          <option value="2OSH: Ocala">2OSH: Ocala</option>
+          <option value="416D: Airline">416D: Airline</option>
+          <option value="4506: Highway 89">4506: Highway 89</option>
+          <option value="4629: Anderson">4629: Anderson</option>
+          <option value="4ASM: Osage">4ASM: Osage</option>
+          <option value="4CSM: Pine Bluff">4CSM: Pine Bluff</option>
+          <option value="532E: 8th Avenue">532E: 8th Avenue</option>
+          <option value="5391: Rockaway">5391: Rockaway</option>
+          <option value="5441: South Bibb">5441: South Bibb</option>
+          <option value="5FSR: Wrightsboro">5FSR: Wrightsboro</option>
+          <option value="6ESG: Louetta">6ESG: Louetta</option>
+          <option value="6ESO: Las Plazas">6ESO: Las Plazas</option>
+          <option value="1151: Springfield Blvd">1151: Springfield Blvd</option>
+          <option value="1157: Commack">1157: Commack</option>
+          <option value="1160: Elmont">1160: Elmont</option>
+          <option value="166E: Frontier">166E: Frontier</option>
+          <option value="1ESB: Creekside">1ESB: Creekside</option>
+          <option value="1USC: Huntsville">1USC: Huntsville</option>
+          <option value="1VSW: Layton">1VSW: Layton</option>
+          <option value="2GSG: Locust Grove">2GSG: Locust Grove</option>
+          <option value="2HSA: Commerce">2HSA: Commerce</option>
+          <option value="3ASM: Beaufort">3ASM: Beaufort</option>
+          <option value="465D: Stonebrook">465D: Stonebrook</option>
+          <option value="5280: Garth Brooks Blvd">5280: Garth Brooks Blvd</option>
+          <option value="6ESR: Texas City">6ESR: Texas City</option>
+          <option value="966D: Sapulpa">966D: Sapulpa</option>
+          <option value="1239: Duncanville">1239: Duncanville</option>
+          <option value="1DSW: Kerrville">1DSW: Kerrville</option>
+          <option value="1HSY: Draper">1HSY: Draper</option>
+          <option value="1USX: Lake Jackson">1USX: Lake Jackson</option>
+          <option value="2SNH: Greenwood">2SNH: Greenwood</option>
+          <option value="2USL: Circleville">2USL: Circleville</option>
+          <option value="2ZSC: Searcy">2ZSC: Searcy</option>
+          <option value="3UST: Boiling Springs">3UST: Boiling Springs</option>
+          <option value="4341: Stegner">4341: Stegner</option>
+          <option value="4723: Palo Alto">4723: Palo Alto</option>
+          <option value="4ASP: Rolla">4ASP: Rolla</option>
+          <option value="5784: Wesley">5784: Wesley</option>
+          <option value="5DSO: Paducah">5DSO: Paducah</option>
+          <option value="5DSX: Kingsville">5DSX: Kingsville</option>
+          <option value="5ESW: Glenwood Springs">5ESW: Glenwood Springs</option>
+          <option value="5GSP: Stow">5GSP: Stow</option>
+          <option value="6ESH: Chisholm Trail">6ESH: Chisholm Trail</option>
+          <option value="776D: Thousand Oaks">776D: Thousand Oaks</option>
+          <option value="179D: Noblesville">179D: Noblesville</option>
+          <option value="1BSE: Red Oak">1BSE: Red Oak</option>
+          <option value="1FSM: Round Rock">1FSM: Round Rock</option>
+          <option value="1VSE: Valley Hi">1VSE: Valley Hi</option>
+          <option value="1WSN: Cochise">1WSN: Cochise</option>
+          <option value="2029: Central">2029: Central</option>
+          <option value="221D: Eagle Pass">221D: Eagle Pass</option>
+          <option value="2833: Claiborne">2833: Claiborne</option>
+          <option value="2OSQ: Rolling Oaks">2OSQ: Rolling Oaks</option>
+          <option value="2QSH: Smithfield">2QSH: Smithfield</option>
+          <option value="2TSY: Granada">2TSY: Granada</option>
+          <option value="2USE: Heath">2USE: Heath</option>
+          <option value="2VSH: Clifton">2VSH: Clifton</option>
+          <option value="2WSP: Heartland">2WSP: Heartland</option>
+          <option value="3DSO: Evansville Burk">3DSO: Evansville Burk</option>
+          <option value="404E: Keystone">404E: Keystone</option>
+          <option value="427E: Kingwood">427E: Kingwood</option>
+          <option value="4CSE: New Iberia">4CSE: New Iberia</option>
+          <option value="512E: Yard Ville">512E: Yard Ville</option>
+          <option value="5DSE: Dixie">5DSE: Dixie</option>
+          <option value="6ESL: Harrison Plaza">6ESL: Harrison Plaza</option>
+          <option value="6ESM: Nogales South">6ESM: Nogales South</option>
+          <option value="964E: Canal Winchester">964E: Canal Winchester</option>
+          <option value="1218: Glen Oaks">1218: Glen Oaks</option>
+          <option value="1953: Viejo">1953: Viejo</option>
+          <option value="1CSD: Bedford">1CSD: Bedford</option>
+          <option value="1ESL: South Park Mall">1ESL: South Park Mall</option>
+          <option value="1ESU: La Cantera">1ESU: La Cantera</option>
+          <option value="1ISA: Lehi">1ISA: Lehi</option>
+          <option value="1USM: 529">1USM: 529</option>
+          <option value="2217: Eastgate">2217: Eastgate</option>
+          <option value="227G: Washington Court House">227G: Washington Court House</option>
+          <option value="2771: Horace">2771: Horace</option>
+          <option value="2843: Stapley">2843: Stapley</option>
+          <option value="2HSH: Dalton">2HSH: Dalton</option>
+          <option value="2HSQ: Brunswick">2HSQ: Brunswick</option>
+          <option value="3ISH: Altoona">3ISH: Altoona</option>
+          <option value="3USU: Gaffney">3USU: Gaffney</option>
+          <option value="4031: Talking">4031: Talking</option>
+          <option value="4160: Main Street">4160: Main Street</option>
+          <option value="4210: Linden">4210: Linden</option>
+          <option value="4BSH: Maple">4BSH: Maple</option>
+          <option value="500E: Hempstead">500E: Hempstead</option>
+          <option value="5564: Golden Triangle">5564: Golden Triangle</option>
+          <option value="5BSV: Athens">5BSV: Athens</option>
+          <option value="5HSF: Knoxville">5HSF: Knoxville</option>
+          <option value="5LSM: Andover">5LSM: Andover</option>
+          <option value="5OSL: Ontario">5OSL: Ontario</option>
+          <option value="618E: Pines Road">618E: Pines Road</option>
+          <option value="708D: Village Center">708D: Village Center</option>
+          <option value="857C: Schilling">857C: Schilling</option>
+          <option value="875E: Custer">875E: Custer</option>
+          <option value="1405: Highway 6">1405: Highway 6</option>
+          <option value="1DST: Texas Ave">1DST: Texas Ave</option>
+          <option value="1DSZ: HEB-Lytle">1DSZ: HEB-Lytle</option>
+          <option value="2839: Newport">2839: Newport</option>
+          <option value="2993: Clifford">2993: Clifford</option>
+          <option value="2QSA: Thomasville">2QSA: Thomasville</option>
+          <option value="2QSE: Judd Parkway">2QSE: Judd Parkway</option>
+          <option value="2QSI: Wake Forest">2QSI: Wake Forest</option>
+          <option value="2USV: Mt. Gilead">2USV: Mt. Gilead</option>
+          <option value="2VSL: Garfield Heights">2VSL: Garfield Heights</option>
+          <option value="2WSA: Wilmington">2WSA: Wilmington</option>
+          <option value="2WSE: Sidney">2WSE: Sidney</option>
+          <option value="354E: Cypress">354E: Cypress</option>
+          <option value="3CSY: Warsaw">3CSY: Warsaw</option>
+          <option value="3FSA: New Hudson">3FSA: New Hudson</option>
+          <option value="3ISR: Council Bluffs">3ISR: Council Bluffs</option>
+          <option value="3ISY: Virginia Avenue">3ISY: Virginia Avenue</option>
+          <option value="4320: Bartlesville">4320: Bartlesville</option>
+          <option value="472D: Independence Pkwy">472D: Independence Pkwy</option>
+          <option value="473E: Grand Rapids">473E: Grand Rapids</option>
+          <option value="4ASA: Hannibal">4ASA: Hannibal</option>
+          <option value="4CSN: Hot Springs">4CSN: Hot Springs</option>
+          <option value="4FSF: Glastonbury">4FSF: Glastonbury</option>
+          <option value="5284: Hamburg">5284: Hamburg</option>
+          <option value="5429: Seventh Ave">5429: Seventh Ave</option>
+          <option value="5561: Angleton">5561: Angleton</option>
+          <option value="5628: Montanus">5628: Montanus</option>
+          <option value="569D: South Main">569D: South Main</option>
+          <option value="586D: Ardmore">586D: Ardmore</option>
+          <option value="5ASV: Exit Seven">5ASV: Exit Seven</option>
+          <option value="5CSB: Morristown">5CSB: Morristown</option>
+          <option value="5CSH: Kingston Pike">5CSH: Kingston Pike</option>
+          <option value="5DSL: Leestown">5DSL: Leestown</option>
+          <option value="5OSO: Power">5OSO: Power</option>
+          <option value="6ESN: Oak Ridge">6ESN: Oak Ridge</option>
+          <option value="701F: Coolidge">701F: Coolidge</option>
+          <option value="957D: Lafayette">957D: Lafayette</option>
+          <option value="1DSF: Killeen">1DSF: Killeen</option>
+          <option value="1ESD: Seguin">1ESD: Seguin</option>
+          <option value="1LSI: Flagstaff">1LSI: Flagstaff</option>
+          <option value="211E: Cleburne">211E: Cleburne</option>
+          <option value="2564: Jeffersonville">2564: Jeffersonville</option>
+          <option value="2PSY: Kernersville">2PSY: Kernersville</option>
+          <option value="2RSV: Columbia">2RSV: Columbia</option>
+          <option value="2USG: Reynoldsburg">2USG: Reynoldsburg</option>
+          <option value="2VSB: Cambridge">2VSB: Cambridge</option>
+          <option value="2WSL: Springfield">2WSL: Springfield</option>
+          <option value="2WSN: Frankfort">2WSN: Frankfort</option>
+          <option value="2XSB: Greenville">2XSB: Greenville</option>
+          <option value="2XSI: Big Rapids">2XSI: Big Rapids</option>
+          <option value="2XSN: Ludington">2XSN: Ludington</option>
+          <option value="3ASB: 31st Ave">3ASB: 31st Ave</option>
+          <option value="3ASV: Bowling Green">3ASV: Bowling Green</option>
+          <option value="3GSD: Lake Orion">3GSD: Lake Orion</option>
+          <option value="3GSH: Clio">3GSH: Clio</option>
+          <option value="3ISS: Dubuque">3ISS: Dubuque</option>
+          <option value="5524: West Islip">5524: West Islip</option>
+          <option value="5662: Middletown">5662: Middletown</option>
+          <option value="5678: Moger">5678: Moger</option>
+          <option value="5BSY: Elizabethton">5BSY: Elizabethton</option>
+          <option value="5CSZ: Louisville">5CSZ: Louisville</option>
+          <option value="609E: Fairfield">609E: Fairfield</option>
+          <option value="689G: Crosby">689G: Crosby</option>
+          <option value="918C: Hamilton">918C: Hamilton</option>
+          <option value="939D: Salisbury Blvd">939D: Salisbury Blvd</option>
+          <option value="114E: Chickasha">114E: Chickasha</option>
+          <option value="1BSA: Ennis">1BSA: Ennis</option>
+          <option value="1CSM: Weatherford">1CSM: Weatherford</option>
+          <option value="1DSD: Copperas Cove">1DSD: Copperas Cove</option>
+          <option value="1DSR: HEB-Mont Belvieu">1DSR: HEB-Mont Belvieu</option>
+          <option value="1USB: Willis">1USB: Willis</option>
+          <option value="200E: Rockport">200E: Rockport</option>
+          <option value="2146: Buckeystown">2146: Buckeystown</option>
+          <option value="216E: Portland">216E: Portland</option>
+          <option value="2422: Brandt Pike">2422: Brandt Pike</option>
+          <option value="2FSL: Smyrna">2FSL: Smyrna</option>
+          <option value="2HSD: Epps Bridge">2HSD: Epps Bridge</option>
+          <option value="2QSF: Clayton">2QSF: Clayton</option>
+          <option value="2VSP: Alliance">2VSP: Alliance</option>
+          <option value="2WSF: Xenia">2WSF: Xenia</option>
+          <option value="2WSO: Zionsville">2WSO: Zionsville</option>
+          <option value="2ZSE: Van Buren">2ZSE: Van Buren</option>
+          <option value="321F: Greenfield">321F: Greenfield</option>
+          <option value="3CSU: Elkhart">3CSU: Elkhart</option>
+          <option value="3ESA: Port Huron">3ESA: Port Huron</option>
+          <option value="3TSZ: Uniontown">3TSZ: Uniontown</option>
+          <option value="4BSZ: Hammond">4BSZ: Hammond</option>
+          <option value="4CSJ: North Mall">4CSJ: North Mall</option>
+          <option value="4DSC: Mustang">4DSC: Mustang</option>
+          <option value="5332: Victoria">5332: Victoria</option>
+          <option value="545D: College Station">545D: College Station</option>
+          <option value="5692: North Broadway">5692: North Broadway</option>
+          <option value="598D: Alice">598D: Alice</option>
+          <option value="5DSF: Georgetown">5DSF: Georgetown</option>
+          <option value="5ESL: Dillon">5ESL: Dillon</option>
+          <option value="5ESN: Fountain">5ESN: Fountain</option>
+          <option value="658D: Damascus">658D: Damascus</option>
+          <option value="686D: Haverhill">686D: Haverhill</option>
+          <option value="6ESP: New Braunfels">6ESP: New Braunfels</option>
+          <option value="887E: Steubenville">887E: Steubenville</option>
+          <option value="922E: Walmart Court">922E: Walmart Court</option>
+          <option value="924C: Granbury">924C: Granbury</option>
+          <option value="985D: 28th Street">985D: 28th Street</option>
+          <option value="1FSI: Marble Falls">1FSI: Marble Falls</option>
+          <option value="1FSU: West Woods">1FSU: West Woods</option>
+          <option value="1LSS: Farmington">1LSS: Farmington</option>
+          <option value="1WSQ: Grant Road">1WSQ: Grant Road</option>
+          <option value="2077: Bethpage">2077: Bethpage</option>
+          <option value="2563: South Main Street">2563: South Main Street</option>
+          <option value="269E: Odessa">269E: Odessa</option>
+          <option value="2USH: Sunbury">2USH: Sunbury</option>
+          <option value="2XSJ: West 48th">2XSJ: West 48th</option>
+          <option value="3ASC: Coastal Grand Mall">3ASC: Coastal Grand Mall</option>
+          <option value="3DSI: Lawrenceburg">3DSI: Lawrenceburg</option>
+          <option value="3GSI: Davison">3GSI: Davison</option>
+          <option value="434E: Commons">434E: Commons</option>
+          <option value="4BSP: King Lane">4BSP: King Lane</option>
+          <option value="4BSR: Grand Island">4BSR: Grand Island</option>
+          <option value="571D: Schertz">571D: Schertz</option>
+          <option value="5742: Riverside Pkwy">5742: Riverside Pkwy</option>
+          <option value="574D: Newark DE">574D: Newark DE</option>
+          <option value="583D: Cibolo">583D: Cibolo</option>
+          <option value="588E: Walker">588E: Walker</option>
+          <option value="5CSX: Ridgeland">5CSX: Ridgeland</option>
+          <option value="5FSV: Samet">5FSV: Samet</option>
+          <option value="5GSG: Fremont">5GSG: Fremont</option>
+          <option value="643E: Bristow">643E: Bristow</option>
+          <option value="6ESQ: Alexandria">6ESQ: Alexandria</option>
+          <option value="703E: Morris">703E: Morris</option>
+          <option value="706E: Route 9">706E: Route 9</option>
+          <option value="904E: Jefferson">904E: Jefferson</option>
+          <option value="918E: La Grange">918E: La Grange</option>
+          <option value="930E: Big Spring">930E: Big Spring</option>
+          <option value="1ISF: Vernal">1ISF: Vernal</option>
+          <option value="218D: Billerica">218D: Billerica</option>
+          <option value="2266: Parkwood">2266: Parkwood</option>
+          <option value="2279: North Bend">2279: North Bend</option>
+          <option value="2FSD: Marietta">2FSD: Marietta</option>
+          <option value="2PST: East Hanes">2PST: East Hanes</option>
+          <option value="2TSZ: Delaware">2TSZ: Delaware</option>
+          <option value="2USD: Newark">2USD: Newark</option>
+          <option value="2USO: London">2USO: London</option>
+          <option value="2VSM: Streetsboro">2VSM: Streetsboro</option>
+          <option value="2VSY: Springboro">2VSY: Springboro</option>
+          <option value="2WSS: Norgate">2WSS: Norgate</option>
+          <option value="2XSH: Three Rivers">2XSH: Three Rivers</option>
+          <option value="2YSY: Denham Springs">2YSY: Denham Springs</option>
+          <option value="374E: Ocean Blvd">374E: Ocean Blvd</option>
+          <option value="3ESO: Mile Road">3ESO: Mile Road</option>
+          <option value="3GSL: Imlay City">3GSL: Imlay City</option>
+          <option value="3USC: Hermitage">3USC: Hermitage</option>
+          <option value="3USZ: Augusta">3USZ: Augusta</option>
+          <option value="452E: Harwich">452E: Harwich</option>
+          <option value="4810: Oneal">4810: Oneal</option>
+          <option value="4BSX: Thibodaux">4BSX: Thibodaux</option>
+          <option value="4FSI: Prospect Hill">4FSI: Prospect Hill</option>
+          <option value="5457: Jericho">5457: Jericho</option>
+          <option value="5485: Spencer">5485: Spencer</option>
+          <option value="553E: Sycamore Plaza">553E: Sycamore Plaza</option>
+          <option value="584D: Uvalde">584D: Uvalde</option>
+          <option value="5DSI: Danville">5DSI: Danville</option>
+          <option value="5DSN: Highland Heights">5DSN: Highland Heights</option>
+          <option value="5ESO: Falcon">5ESO: Falcon</option>
+          <option value="5ESS: Northgate">5ESS: Northgate</option>
+          <option value="5ESX: Cheyenne">5ESX: Cheyenne</option>
+          <option value="5GSM: Independence">5GSM: Independence</option>
+          <option value="5LSU: Dupont">5LSU: Dupont</option>
+          <option value="605E: Carmel">605E: Carmel</option>
+          <option value="762E: Centennial">762E: Centennial</option>
+          <option value="232E: Eva Plaza">232E: Eva Plaza</option>
+          <option value="256E: Stephenville">256E: Stephenville</option>
+          <option value="2QSC: Fordham">2QSC: Fordham</option>
+          <option value="2QSL: Zebulon">2QSL: Zebulon</option>
+          <option value="2USB: Marysville">2USB: Marysville</option>
+          <option value="2USW: Bellefontaine">2USW: Bellefontaine</option>
+          <option value="2VSA: Zanesville">2VSA: Zanesville</option>
+          <option value="2VSD: Ashtabula">2VSD: Ashtabula</option>
+          <option value="2VSS: Ashland">2VSS: Ashland</option>
+          <option value="2XSL: Grand Haven">2XSL: Grand Haven</option>
+          <option value="2XSP: Northland">2XSP: Northland</option>
+          <option value="377D: Norwalk">377D: Norwalk</option>
+          <option value="3DSH: Marion">3DSH: Marion</option>
+          <option value="450E: North Street">450E: North Street</option>
+          <option value="4BSM: Center">4BSM: Center</option>
+          <option value="4BSN: Ames">4BSN: Ames</option>
+          <option value="4BSW: Uptown">4BSW: Uptown</option>
+          <option value="4CSA: Covington">4CSA: Covington</option>
+          <option value="5473: West Ruark">5473: West Ruark</option>
+          <option value="5474: Lexington">5474: Lexington</option>
+          <option value="5503: Big Elk">5503: Big Elk</option>
+          <option value="5552: Bloomington">5552: Bloomington</option>
+          <option value="560E: Oxford">560E: Oxford</option>
+          <option value="5DSP: 12th Street">5DSP: 12th Street</option>
+          <option value="5GSB: Asheville">5GSB: Asheville</option>
+          <option value="5GSJ: Twinsburg">5GSJ: Twinsburg</option>
+          <option value="5GSO: Solon">5GSO: Solon</option>
+          <option value="5HSA: Beaver Falls">5HSA: Beaver Falls</option>
+          <option value="5HSE: Triadelphia">5HSE: Triadelphia</option>
+          <option value="693E: Summit Square">693E: Summit Square</option>
+          <option value="731E: Pataskala">731E: Pataskala</option>
+          <option value="113E: Broken Arrow">113E: Broken Arrow</option>
+          <option value="144E: Maysville">144E: Maysville</option>
+          <option value="2HSU: Macclenny">2HSU: Macclenny</option>
+          <option value="2RSO: Morehead City">2RSO: Morehead City</option>
+          <option value="2USC: Mt. Vernon">2USC: Mt. Vernon</option>
+          <option value="2VSZ: Hillsboro">2VSZ: Hillsboro</option>
+          <option value="3BSV: Centerville">3BSV: Centerville</option>
+          <option value="3DSE: Chapel Ridge">3DSE: Chapel Ridge</option>
+          <option value="3DSJ: Corydon">3DSJ: Corydon</option>
+          <option value="3USA: Countryside">3USA: Countryside</option>
+          <option value="436E: Tuckerton">436E: Tuckerton</option>
+          <option value="456E: Seymour">456E: Seymour</option>
+          <option value="477E: South Lyon">477E: South Lyon</option>
+          <option value="480E: Bargersville">480E: Bargersville</option>
+          <option value="4CST: Little Rock">4CST: Little Rock</option>
+          <option value="4MSU: Islandia">4MSU: Islandia</option>
+          <option value="536E: Beeville">536E: Beeville</option>
+          <option value="5533: West Lafayette">5533: West Lafayette</option>
+          <option value="5634: River Road">5634: River Road</option>
+          <option value="563E: Lebanon">563E: Lebanon</option>
+          <option value="5751: Elsa">5751: Elsa</option>
+          <option value="5761: Corsicana Hwy">5761: Corsicana Hwy</option>
+          <option value="598E: Crossing">598E: Crossing</option>
+          <option value="722E: Knapps Corner">722E: Knapps Corner</option>
+          <option value="767D: Spring Branch">767D: Spring Branch</option>
+          <option value="878E: St Clairsville">878E: St Clairsville</option>
+          <option value="894E: Mt Washington">894E: Mt Washington</option>
+          <option value="903E: Olton">903E: Olton</option>
+          <option value="1DSG: Taylor">1DSG: Taylor</option>
+          <option value="1FSS: Belterra">1FSS: Belterra</option>
+          <option value="1FSX: Plainview">1FSX: Plainview</option>
+          <option value="227E: Pinhook">227E: Pinhook</option>
+          <option value="2WSD: Harrison Avenue">2WSD: Harrison Avenue</option>
+          <option value="2WSR: Nora">2WSR: Nora</option>
+          <option value="2YSZ: Prairieville">2YSZ: Prairieville</option>
+          <option value="3CSC: Hazel Dell">3CSC: Hazel Dell</option>
+          <option value="3DSB: Kendallville">3DSB: Kendallville</option>
+          <option value="3GSQ: Euclid">3GSQ: Euclid</option>
+          <option value="472E: Martinsville">472E: Martinsville</option>
+          <option value="4BSI: 180th Street">4BSI: 180th Street</option>
+          <option value="5413: Marlboro">5413: Marlboro</option>
+          <option value="5DSR: Owensboro">5DSR: Owensboro</option>
+          <option value="700G: East Islip">700G: East Islip</option>
+          <option value="704E: County Road">704E: County Road</option>
+          <option value="732E: New Castle">732E: New Castle</option>
+          <option value="877E: Milford">877E: Milford</option>
+          <option value="926D: Westfield">926D: Westfield</option>
+          <option value="961F: Highway 71">961F: Highway 71</option>
+          <option value="150F: Rochester Hills">150F: Rochester Hills</option>
+          <option value="1DSE: Killeen Mall">1DSE: Killeen Mall</option>
+          <option value="240E: Winchester">240E: Winchester</option>
+          <option value="474E: Allendale">474E: Allendale</option>
+          <option value="5GSQ: Youngstown">5GSQ: Youngstown</option>
+          <option value="720F: Sedona">720F: Sedona</option>
+          <option value="764E: Piqua">764E: Piqua</option>
+          <option value="791E: New York Avenue">791E: New York Avenue</option>
+          <option value="851C: Albany Turnpike">851C: Albany Turnpike</option>
+          <option value="933D: Hebron">933D: Hebron</option>
+          <option value="2USI: Urbana">2USI: Urbana</option>
+          <option value="2VSC: Coshocton">2VSC: Coshocton</option>
+          <option value="2VST: Bucyrus">2VST: Bucyrus</option>
+          <option value="481E: Shelbyville">481E: Shelbyville</option>
+          <option value="5GST: Green">5GST: Green</option>
+          <option value="766D: Dilworthtown">766D: Dilworthtown</option>
+          <option value="617E: Rushville">617E: Rushville</option>
         </select>
       </label>
       <label>
@@ -56,7 +663,6 @@
         <button type="button" id="editLocation">Edit Location/Week</button>
       </div>
     </form>
-
     <div id="tableSection" class="hidden">
       <h2 id="tableTitle"></h2>
       <table>
@@ -101,7 +707,6 @@
       // Others: identity
     };
 
-    // Formatting functions
     function formatDollarNoCents(val) {
       let n = parseFloat(val.replace(/[^0-9.\-]/g, "")); if (isNaN(n)) return "";
       return "$" + Math.round(n).toLocaleString();
@@ -113,7 +718,6 @@
     function formatPercentNoDecimal(val) {
       let n = parseFloat(val.replace(/[^0-9.\-]/g, ""));
       if (isNaN(n)) return "";
-      // if entered as 0-100, keep as is, if as 0-1, multiply by 100
       if (n <= 1 && n !== 0) n = n*100;
       return Math.round(n) + "%";
     }
@@ -132,32 +736,25 @@
     const metricsTable = document.getElementById('metricsTable');
     const editMetricsBtn = document.getElementById('editMetrics');
     const clearAllDataBtn = document.getElementById('clearAllData');
-
-    // State
     let locationName = "";
     let selectedWeek = "";
     let metricsData = {};
     let allData = {};
-
-    // Local Storage keys
     const STORAGE_KEY = "locationPerformanceData";
 
     function loadAllData() {
       const raw = localStorage.getItem(STORAGE_KEY);
       allData = raw ? JSON.parse(raw) : {};
     }
-
     function saveAllData() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
     }
 
-    // Location Form submission
     locationForm.onsubmit = function(e) {
       e.preventDefault();
       locationName = locationDropdown.value;
       selectedWeek = weekSelect.value;
       if(!locationName || !selectedWeek) return;
-
       loadAllData();
       let prevValues = (allData[locationName] && allData[locationName][selectedWeek]) || {};
       formMetricsDiv.innerHTML = metrics.map(metric =>
@@ -196,6 +793,7 @@
       loadAllData();
       let locWeeks = allData[locationName] || {};
       tableTitle.textContent = `Location: ${locationName}`;
+      let isMobile = window.innerWidth <= 700;
       metricsTable.innerHTML = metrics.map(metric => {
         let row = `<td>${metric}</td>`;
         for(let i=1; i<=5; i++) {
@@ -203,6 +801,20 @@
         }
         return `<tr>${row}</tr>`;
       }).join('');
+      // For mobile: add data-label to each td
+      if (isMobile) {
+        let trs = metricsTable.querySelectorAll("tr");
+        trs.forEach((tr, idx) => {
+          let tds = tr.querySelectorAll("td");
+          if (tds.length === 6) {
+            let labels = ["Metric", "Week 1", "Week 2", "Week 3", "Week 4", "Week 5"];
+            tds.forEach((td, i) => {
+              td.setAttribute("data-label", labels[i]);
+              if (i !== 0) td.style.fontWeight = "400";
+            });
+          }
+        });
+      }
       tableSection.classList.remove('hidden');
       metricsForm.querySelector('.form-metrics').classList.add('hidden');
       metricsForm.querySelector('.actions').classList.add('hidden');
@@ -219,7 +831,6 @@
       metricsForm.querySelector('.actions').classList.remove('hidden');
     };
 
-    // CHANGED: Now clears only data for the currently selected location
     clearAllDataBtn.onclick = function() {
       if (!locationName) {
         alert('Please select a location.');
@@ -231,7 +842,6 @@
           delete allData[locationName];
           saveAllData();
         }
-        // Reset UI to location page:
         locationSection.classList.remove('hidden');
         metricsSection.classList.add('hidden');
         tableSection.classList.add('hidden');
@@ -240,9 +850,11 @@
       }
     };
 
-    // On page load, just initialize
-    loadAllData();
+    window.addEventListener('resize', function() {
+      if (!tableSection.classList.contains('hidden')) renderTable();
+    });
 
+    loadAllData();
   </script>
 </body>
 </html>
