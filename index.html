@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Weekly Business Review</title>
+  <title>Performance, Forms, Commitments</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
@@ -301,8 +301,8 @@
     <form id="metricsForm" autocomplete="off">
       <div class="form-metrics"></div>
       <div class="actions">
-        <button type="submit" id="calculateBtn">Calculate</button>
-        <button type="button" id="editSelection">Edit Selection</button>
+        <button type="button" id="backButton">Back</button>
+        <button type="submit" id="nextBtn">Next</button>
       </div>
     </form>
   </div>
@@ -375,7 +375,8 @@
     const metricsSection = document.getElementById('metricsSection');
     const metricsForm = document.getElementById('metricsForm');
     const formMetricsDiv = metricsForm.querySelector('.form-metrics');
-    const editSelectionBtn = document.getElementById('editSelection');
+    const backButton = document.getElementById('backButton');
+    const nextBtn = document.getElementById('nextBtn');
     const tableSection = document.getElementById('tableSection');
     const tableTitle = document.getElementById('tableTitle');
     const printMeta = document.getElementById('printMeta');
@@ -476,7 +477,7 @@
       tableSection.classList.add('hidden');
     };
 
-    // Data entry page, calculate button
+    // Data entry page: Next button submits data and goes to table
     metricsForm.onsubmit = function(e) {
       e.preventDefault();
       metricsData = {};
@@ -493,7 +494,8 @@
       renderTable();
     };
 
-    editSelectionBtn.onclick = function() {
+    // Back button returns to selection page
+    backButton.onclick = function() {
       selectionSection.classList.remove('hidden');
       metricsSection.classList.add('hidden');
       tableSection.classList.add('hidden');
