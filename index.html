@@ -20,7 +20,13 @@
 
   <!-- Data Entry Page -->
   <div id="metricsSection" class="hidden">
-    <!-- ... as before ... -->
+    <h2>Enter Weekly Data</h2>
+    <form id="metricsForm"></form>
+    <div class="actions">
+      <button type="button" onclick="saveMetrics()">Save Entry</button>
+      <button type="button" id="resetTargets">Reset Targets</button>
+      <button type="button" onclick="backToSelection()">Back</button>
+    </div>
   </div>
 
   <!-- Data Table Page -->
@@ -31,6 +37,7 @@
       <thead>
         <tr class="header-row">
           <th>Metric</th>
+          <th>Target</th>
           <th>Week 1</th>
           <th>Week 2</th>
           <th>Week 3</th>
@@ -48,12 +55,104 @@
   </div>
 
   <script>
-    // ... (all your other JS as before) ...
+    // --- Default target values ---
+    const defaultTargets = {
+      "Net Trending GP": "",
+      "Current Rank": "86",
+      "Current Quintile": "1",
+      "Bottom Metrics": "4th/5th",
+      "GP % Target": "125%",
+      "GP per HR": "$35",
+      "Voice": "125%",
+      "BTS": "125%",
+      "TFB": "125%",
+      "VAF": "$19",
+      "Accessories": "125%",
+      "CSAT": "9.5",
+      "AAL Attainment": "125%"
+    };
+
+    let savedData = JSON.parse(localStorage.getItem("metricsData")) || {};
+    let targets = { ...defaultTargets };
+
+    function showMetricsEntry() {
+      selectionSection.classList.add("hidden");
+      metricsSection.classList.remove("hidden");
+      buildForm();
+    }
+
+    function showTable() {
+      selectionSection.classList.add("hidden");
+      tableSection.classList.remove("hidden");
+      renderTable();
+    }
+
+    function backToSelection() {
+      metricsSection.classList.add("hidden");
+      tableSection.classList.add("hidden");
+      selectionSection.classList.remove("hidden");
+    }
+
+    function buildForm() {
+      const form = document.getElementById("metricsForm");
+      form.innerHTML = "";
+      for (let metric in defaultTargets) {
+        const div = document.createElement("div");
+        div.className = "metric-entry";
+        div.innerHTML = `
+          <label>${metric}:</label>
+          <input type="text" name="target-${metric}" value="${targets[metric] || ''}" placeholder="Target">
+          <input type="text" name="current-${metric}" placeholder="Current">
+        `;
+        form.appendChild(div);
+      }
+    }
+
+    function saveMetrics() {
+      const formData = new FormData(document.getElementById("metricsForm"));
+      for (let metric in defaultTargets) {
+        targets[metric] = formData.get(`target-${metric}`) || defaultTargets[metric];
+        if (!savedData[metric]) savedData[metric] = { target: targets[metric], weeks: [] };
+        savedData[metric].target = targets[metric];
+        savedData[metric].weeks.push(formData.get(`current-${metric}`));
+      }
+      localStorage.setItem("metricsData", JSON.stringify(savedData));
+      alert("Data saved!");
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById("metricsTable");
+      tbody.innerHTML = "";
+      for (let metric in defaultTargets) {
+        const row = document.createElement("tr");
+        const data = savedData[metric] || { target: targets[metric], weeks: [] };
+        row.innerHTML = `
+          <td>${metric}</td>
+          <td>${data.target || ""}</td>
+          ${Array.from({ length: 5 }).map((_, i) => `<td>${data.weeks[i] || ""}</td>`).join("")}
+        `;
+        tbody.appendChild(row);
+      }
+    }
+
+    resetTargets.onclick = function() {
+      targets = { ...defaultTargets };
+      buildForm();
+    };
+
+    backToMetrics.onclick = backToSelection;
+
+    clearAllData.onclick = function() {
+      if (confirm("Clear all saved data?")) {
+        localStorage.removeItem("metricsData");
+        savedData = {};
+        renderTable();
+      }
+    };
 
     // Print screenshot of current tableSection, centered on page
     printTableBtn.onclick = function() {
       html2canvas(tableSection).then(function(canvas) {
-        // Open a new window for the printout
         let win = window.open('', '_blank');
         win.document.write(`
           <html>
@@ -88,7 +187,6 @@
           </body>
           </html>
         `);
-        // Wait for document to be ready before appending canvas
         win.document.close();
         win.onload = function() {
           win.document.getElementById('canvasContainer').appendChild(canvas);
@@ -98,8 +196,6 @@
         };
       });
     };
-
-    // ... (rest of JS as before) ...
   </script>
 </body>
 </html>
