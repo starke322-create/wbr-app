@@ -11,6 +11,10 @@
       --primary-border: #d1d5db;
       --primary-radius: 8px;
       --primary-font: 'Segoe UI', Arial, sans-serif;
+      --target-highlight: #fff59d;
+      --target-entry-color: #d32f2f;
+      --leaderboard-bg: #DC008C;
+      --leaderboard-color: #111;
     }
     html, body {
       margin: 0;
@@ -19,48 +23,48 @@
       font-family: var(--primary-font);
       color: #222;
       min-height: 100vh;
+      box-sizing: border-box;
     }
     body {
       max-width: 570px;
       margin: 0 auto;
       padding: 1em 0.5em 3em 0.5em;
+      box-sizing: border-box;
     }
     h1 {
-      font-size: 1.5em;
+      font-size: 1.3em;
       margin-bottom: 1em;
       text-align: center;
       color: var(--primary-accent);
       letter-spacing: 1px;
-    }
-    .red-accent {
-      color: var(--primary-accent) !important;
+      font-weight: 700;
     }
     form {
       background: #fff;
-      padding: 1.2em 1em 1.2em 1em;
+      padding: 1em 0.7em 1em 0.7em;
       border-radius: var(--primary-radius);
       box-shadow: 0 2px 8px 0 #0001;
-      margin-bottom: 1.5em;
+      margin-bottom: 1em;
     }
     label {
       display: block;
-      margin-top: 1em;
+      margin-top: 0.7em;
       font-weight: 500;
       font-size: 1em;
     }
     select, input[type="text"], button {
       font-size: 1em;
       width: 100%;
-      padding: 0.65em;
+      padding: 0.6em;
       border: 1px solid var(--primary-border);
       border-radius: var(--primary-radius);
       box-sizing: border-box;
-      margin-top: 0.5em;
-      margin-bottom: 0.5em;
+      margin-top: 0.4em;
+      margin-bottom: 0.4em;
       background: #fcfcfc;
       transition: box-shadow 0.2s, border 0.2s;
     }
-    select:focus, input[type="text"]:focus {
+    select:focus, input[type="text"]:focus, .target-input:focus {
       outline: none;
       border: 1.5px solid var(--primary-accent);
       box-shadow: 0 0 3px 1.5px #d32f2f40;
@@ -74,81 +78,168 @@
       margin-bottom: 0;
       border: none;
       transition: background 0.2s;
-      font-size: 1.05em;
+      font-size: 1em;
+      border-radius: var(--primary-radius);
     }
     button:hover, button:focus {
       background: #a62828;
     }
     .actions {
       display: flex;
-      gap: 0.7em;
-      margin-top: 1.2em;
+      gap: 0.5em;
+      margin-top: 1em;
       flex-wrap: wrap;
     }
     .actions > button {
       flex: 1;
-      min-width: 120px;
-    }
-    .form-metrics label {
-      margin: 0.8em 0 0.2em 0;
-      font-weight: 400;
+      min-width: 90px;
       font-size: 0.98em;
     }
-    .form-metrics input[type="text"] {
-      margin-bottom: 0.1em;
+    .metric-row {
+      margin-bottom: 1em;
     }
-    .header-row th {
-      font-size: 1.06em;
-      letter-spacing: 0.5px;
-      padding: 0.6em 0.1em;
+    .metric-label {
+      font-weight: 600;
+      font-size: 1em;
+      margin-bottom: 0.2em;
+      display: block;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1em;
-      background: #fff;
-      border-radius: var(--primary-radius);
-      overflow: hidden;
-      box-shadow: 0 2px 8px 0 #0001;
+    .entry-row {
+      display: flex;
+      gap: 0.6em;
+      margin-top: 0.1em;
+    }
+    .entry-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .entry-label {
       font-size: 0.97em;
+      margin-bottom: 0.08em;
+      font-weight: 400;
+      color: #777;
     }
-    th, td {
+    .target-input {
+      font-size: 1em;
+      padding: 0.45em;
+      border: 1.5px solid var(--primary-accent);
+      border-radius: var(--primary-radius);
+      background: #f3f3f3;
+      color: var(--target-entry-color);
+      font-weight: 500;
+      box-sizing: border-box;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    .current-input {
+      font-size: 1em;
+      padding: 0.45em;
       border: 1px solid var(--primary-border);
-      padding: 0.5em 0.2em;
-      text-align: center;
-      vertical-align: middle;
+      border-radius: var(--primary-radius);
+      background: #fcfcfc;
+      color: #222;
+      font-weight: 500;
+      box-sizing: border-box;
+      transition: border 0.2s, box-shadow 0.2s;
     }
-    th {
-      background: #ffebee;
-      color: var(--primary-accent);
+    .reset-targets-btn {
+      margin-top: 1.1em;
+      margin-bottom: 0.3em;
+      background: #757575;
+      color: #fff;
+      border: none;
+      border-radius: var(--primary-radius);
+      padding: 0.6em 1em;
+      font-size: 0.97em;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: 100%;
+      display: block;
+    }
+    .reset-targets-btn:hover, .reset-targets-btn:focus {
+      background: #a62828;
     }
     #tableTitle {
       text-align: center;
       font-weight: 600;
-      font-size: 1.13em;
-      margin: 1.1em 0 0.2em 0;
+      font-size: 1.1em;
+      margin: 0.8em 0 0.2em 0;
       color: var(--primary-accent);
       letter-spacing: 0.6px;
     }
     #printMeta {
       text-align: center;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       color: #444;
-      font-size: 1em;
+      font-size: 0.97em;
+      word-break: break-word;
     }
-    .hidden { display: none !important; }
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: var(--primary-radius);
+      box-shadow: 0 2px 8px 0 #0001;
+      padding: 0.2em 0.2em;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.5em 0 0.8em 0;
+      background: #fff;
+      font-size: 0.97em;
+      min-width: 530px;
+    }
+    th, td {
+      border: 1px solid var(--primary-border);
+      padding: 0.45em 0.1em;
+      text-align: center;
+      vertical-align: middle;
+      word-break: break-word;
+    }
+    th {
+      background: #ffebee;
+      color: var(--primary-accent);
+      font-size: 1em;
+      font-weight: 700;
+    }
+    .target-cell {
+      background: var(--target-highlight) !important;
+      font-weight: 700;
+      color: var(--primary-accent) !important;
+    }
+    .leaderboard-row td {
+      background: var(--leaderboard-bg) !important;
+      color: var(--leaderboard-color) !important;
+      font-weight: 700;
+      font-size: 1.03em;
+      letter-spacing: 1.5px;
+      text-align: center;
+      border: none !important;
+      padding: 0.8em 0 !important;
+    }
     @media (max-width: 700px) {
+      body {
+        padding: 0.2em 0.05em 2em 0.05em;
+      }
+      .entry-row {
+        flex-direction: column;
+        gap: 0.3em;
+      }
       table, thead, tbody, th, td, tr {
         display: block;
       }
       table {
         font-size: 1em;
+        min-width: 0;
       }
       thead {
         display: none;
       }
       tr {
-        margin-bottom: 1.08em;
+        margin-bottom: 1em;
         background: #fff;
         box-shadow: 0 1px 4px 0 #0001;
         border-radius: var(--primary-radius);
@@ -157,16 +248,16 @@
         border: none;
         border-bottom: 1px solid #eee;
         position: relative;
-        padding-left: 48%;
+        padding-left: 45%;
         text-align: left;
-        min-height: 36px;
+        min-height: 30px;
       }
       td:before {
         position: absolute;
         top: 0;
         left: 0;
-        width: 46%;
-        padding-left: 0.6em;
+        width: 44%;
+        padding-left: 0.5em;
         font-weight: 600;
         white-space: pre-wrap;
         color: #555;
@@ -174,29 +265,28 @@
       tr td:first-child {
         background: #ffebee;
         border-radius: var(--primary-radius) var(--primary-radius) 0 0;
-        font-weight: 600;
+        font-weight: 700;
         padding-left: 1em;
         color: var(--primary-accent);
-        font-size: 1.08em;
+        font-size: 1em;
+      }
+      .leaderboard-row td {
+        padding-left: 0 !important;
+        text-align: center !important;
+        font-size: 1em !important;
       }
     }
     @media (max-width: 430px) {
-      html, body {
-        padding: 0;
-      }
       form, table {
         border-radius: 0;
         box-shadow: none;
       }
       .actions > button {
-        font-size: 0.96em;
+        font-size: 0.93em;
         min-width: 0;
       }
-      .form-metrics label {
-        font-size: 0.96em;
-      }
       #tableTitle {
-        font-size: 1em;
+        font-size: 0.97em;
       }
     }
     @media print {
@@ -206,10 +296,10 @@
         max-width: none;
         padding: 0;
       }
-      h1, #metricsSection, .actions, .form-metrics, #backToMetrics, #clearAllData, #printTableBtn, #selectionSection, #metricsForm, button, .actions, .hidden {
+      h1, #metricsSection, .actions, .form-metrics, #backToMetrics, #clearAllData, #printTableBtn, #selectionSection, #metricsForm, button, .actions, .hidden, .reset-targets-btn {
         display: none !important;
       }
-      #tableSection, #tableTitle, #printMeta, table, thead, tbody, tr, th, td {
+      #tableSection, #tableTitle, #printMeta, .table-container, table, thead, tbody, tr, th, td {
         display: block !important;
         color: #000;
       }
@@ -219,13 +309,13 @@
       }
       #tableTitle, #printMeta {
         margin-top: 0;
-        margin-bottom: 6px;
-        font-size: 1.2em;
+        margin-bottom: 4px;
+        font-size: 1.1em;
         color: #000 !important;
       }
       table {
-        font-size: 0.98em;
-        margin-top: 0.3em;
+        font-size: 0.92em;
+        margin-top: 0.2em;
         border-radius: 0;
         box-shadow: none;
         width: 100%;
@@ -234,15 +324,25 @@
         color: #000 !important;
         border: 1px solid #999 !important;
         background: #fff !important;
-        padding: 0.35em 0.08em;
+        padding: 0.3em 0.06em;
       }
       th {
         color: #000 !important;
         background: #eee !important;
       }
+      .leaderboard-row td {
+        background: #DC008C !important;
+        color: #111 !important;
+        border: none !important;
+        font-weight: 700 !important;
+        font-size: 1.03em !important;
+        letter-spacing: 1.5px !important;
+        text-align: center !important;
+        padding: 0.7em 0 !important;
+      }
       @page {
         size: portrait;
-        margin: 0.5in 0.3in 0.5in 0.3in;
+        margin: 0.45in 0.18in 0.45in 0.18in;
       }
     }
   </style>
@@ -251,36 +351,30 @@
 </head>
 <body>
   <h1>Weekly Business Review</h1>
-
   <!-- Selection Page -->
   <div id="selectionSection">
     <form id="selectionForm" autocomplete="off">
-      <label>
-        Area:
+      <label>Area:
         <select id="areaDropdown" required>
           <option value="">--Select Area--</option>
         </select>
       </label>
-      <label>
-        Region:
+      <label>Region:
         <select id="regionDropdown" required disabled>
           <option value="">--Select Region--</option>
         </select>
       </label>
-      <label>
-        District:
+      <label>District:
         <select id="districtDropdown" required disabled>
           <option value="">--Select District--</option>
         </select>
       </label>
-      <label>
-        Store:
+      <label>Store:
         <select id="storeDropdown" required disabled>
           <option value="">--Select Store--</option>
         </select>
       </label>
-      <label>
-        Select Week: 
+      <label>Select Week: 
         <select id="weekSelect" required>
           <option value="">--Select Week--</option>
           <option value="1">Week 1</option>
@@ -300,6 +394,7 @@
   <div id="metricsSection" class="hidden">
     <form id="metricsForm" autocomplete="off">
       <div class="form-metrics"></div>
+      <button type="button" class="reset-targets-btn" id="resetTargetsBtn">Reset Targets to Default</button>
       <div class="actions">
         <button type="button" id="backButton">Back</button>
         <button type="submit" id="nextBtn">Next</button>
@@ -311,19 +406,19 @@
   <div id="tableSection" class="hidden">
     <div id="printMeta"></div>
     <h2 id="tableTitle"></h2>
-    <table>
-      <thead>
-        <tr class="header-row">
-          <th>Metric</th>
-          <th>Week 1</th>
-          <th>Week 2</th>
-          <th>Week 3</th>
-          <th>Week 4</th>
-          <th>Week 5</th>
-        </tr>
-      </thead>
-      <tbody id="metricsTable"></tbody>
-    </table>
+    <div class="table-container" id="tableWrapper">
+      <table id="mainMetricsTable">
+        <thead>
+          <tr class="header-row" id="metricsHeaderRow">
+            <!-- Headers rendered dynamically -->
+          </tr>
+          <tr class="leaderboard-row" id="leaderboardRow">
+            <!-- CS Leaderboard row rendered dynamically -->
+          </tr>
+        </thead>
+        <tbody id="metricsTable"></tbody>
+      </table>
+    </div>
     <div class="actions" id="tableActions">
       <button id="backToMetrics">Back</button>
       <button id="clearAllData">Clear All Data</button>
@@ -332,17 +427,14 @@
   </div>
 
   <script>
-    // ... (JavaScript unchanged from v23, as in your current version) ...
-    // (All JS from v23, including html2canvas print, button logic, etc.)
-    // (See previous code for full implementation.)
-    // --- Begin v23 JS ---
+    // Metric definitions, formatters, and default targets
     const metrics = [
-      "Trending Net GP", "Current Rank", "Current Quintile", "Bottom Metrics",
+      "Net Trending GP", "Current Rank", "Current Quintile", "Bottom Metrics",
       "GP % Target", "GP per HR", "Voice", "BTS", "TFB", "VAF",
       "Accessories", "CSAT", "AAL Attainment"
     ];
     const metricFormatters = {
-      "Trending Net GP": v => formatDollarNoCents(v),
+      "Net Trending GP": v => formatDollarNoCents(v),
       "GP % Target": v => formatPercentNoDecimal(v),
       "GP per HR": v => formatDollar(v),
       "Voice": v => formatPercentNoDecimal(v),
@@ -351,7 +443,27 @@
       "VAF": v => formatDollar(v),
       "Accessories": v => formatPercentNoDecimal(v),
       "AAL Attainment": v => formatPercentNoDecimal(v),
+      "Current Rank": v => v,
+      "Current Quintile": v => v,
+      "Bottom Metrics": v => v,
+      "CSAT": v => v
     };
+    const defaultTargets = {
+      "Net Trending GP": "",
+      "Current Rank": "86",
+      "Current Quintile": "1",
+      "Bottom Metrics": "4th/5th",
+      "GP % Target": "125%",
+      "GP per HR": "$35",
+      "Voice": "125%",
+      "BTS": "125%",
+      "TFB": "125%",
+      "VAF": "$19",
+      "Accessories": "125%",
+      "CSAT": "9.5",
+      "AAL Attainment": "100%"
+    };
+
     function formatDollarNoCents(val) {
       let n = parseFloat(val.replace(/[^0-9.\-]/g, "")); if (isNaN(n)) return "";
       return "$" + Math.round(n).toLocaleString();
@@ -367,6 +479,7 @@
       return Math.round(n) + "%";
     }
 
+    // Elements
     const selectionSection = document.getElementById('selectionSection');
     const selectionForm = document.getElementById('selectionForm');
     const areaDropdown = document.getElementById('areaDropdown');
@@ -377,17 +490,22 @@
     const metricsSection = document.getElementById('metricsSection');
     const metricsForm = document.getElementById('metricsForm');
     const formMetricsDiv = metricsForm.querySelector('.form-metrics');
+    const resetTargetsBtn = document.getElementById('resetTargetsBtn');
     const backButton = document.getElementById('backButton');
     const nextBtn = document.getElementById('nextBtn');
     const tableSection = document.getElementById('tableSection');
     const tableTitle = document.getElementById('tableTitle');
     const printMeta = document.getElementById('printMeta');
     const metricsTable = document.getElementById('metricsTable');
+    const mainMetricsTable = document.getElementById('mainMetricsTable');
+    const metricsHeaderRow = document.getElementById('metricsHeaderRow');
+    const leaderboardRow = document.getElementById('leaderboardRow');
     const backToMetricsBtn = document.getElementById('backToMetrics');
     const clearAllDataBtn = document.getElementById('clearAllData');
     const printTableBtn = document.getElementById('printTableBtn');
-    const tableActions = document.getElementById('tableActions');
+    const tableWrapper = document.getElementById('tableWrapper');
 
+    // State
     let selectedArea = "";
     let selectedRegion = "";
     let selectedDistrict = "";
@@ -395,7 +513,27 @@
     let selectedWeek = "";
     let metricsData = {};
     let allData = {};
+    let storeTargets = {};
     const STORAGE_KEY = "locationPerformanceData";
+    const TARGETS_KEY = "locationTargetData";
+
+    function getStoreTargetKey(store) {
+      return store ? store : "default";
+    }
+    function loadTargets(store) {
+      let raw = localStorage.getItem(TARGETS_KEY);
+      let allTargets = raw ? JSON.parse(raw) : {};
+      return allTargets[getStoreTargetKey(store)] || {...defaultTargets};
+    }
+    function saveTargets(store, targets) {
+      let raw = localStorage.getItem(TARGETS_KEY);
+      let allTargets = raw ? JSON.parse(raw) : {};
+      allTargets[getStoreTargetKey(store)] = {...targets};
+      localStorage.setItem(TARGETS_KEY, JSON.stringify(allTargets));
+    }
+    function resetStoreTargets(store) {
+      saveTargets(store, {...defaultTargets});
+    }
 
     function populateAreaDropdown() {
       areaDropdown.innerHTML = '<option value="">--Select Area--</option>';
@@ -467,10 +605,24 @@
       selectedWeek = weekSelect.value;
       if (!selectedArea || !selectedRegion || !selectedDistrict || !selectedStore || !selectedWeek) return;
       loadAllData();
+      storeTargets = loadTargets(selectedStore);
+
       let prevValues = (allData[selectedStore] && allData[selectedStore][selectedWeek]) || {};
-      formMetricsDiv.innerHTML = metrics.map(metric =>
-        `<label>${metric}: <input type="text" name="${metric}" required value="${prevValues[metric] || ""}" autocomplete="off" /></label>`
-      ).join('');
+      formMetricsDiv.innerHTML = metrics.map(metric => `
+        <div class="metric-row">
+          <span class="metric-label">${metric}:</span>
+          <div class="entry-row">
+            <div class="entry-col">
+              <span class="entry-label">Target</span>
+              <input class="target-input" type="text" name="target_${metric}" value="${storeTargets[metric] || defaultTargets[metric] || ""}" autocomplete="off" />
+            </div>
+            <div class="entry-col">
+              <span class="entry-label">Current</span>
+              <input class="current-input" type="text" name="${metric}" required value="${prevValues[metric] || ""}" autocomplete="off" />
+            </div>
+          </div>
+        </div>
+      `).join('');
       selectionSection.classList.add('hidden');
       metricsSection.classList.remove('hidden');
       tableSection.classList.add('hidden');
@@ -479,17 +631,33 @@
     metricsForm.onsubmit = function(e) {
       e.preventDefault();
       metricsData = {};
+      let newTargets = {};
       metrics.forEach(metric => {
         let raw = metricsForm.elements[metric].value;
         metricsData[metric] = metricFormatters[metric]
           ? metricFormatters[metric](raw)
           : raw;
+        let targetRaw = metricsForm.elements["target_" + metric].value;
+        newTargets[metric] = targetRaw;
       });
       loadAllData();
       if (!allData[selectedStore]) allData[selectedStore] = {};
       allData[selectedStore][selectedWeek] = {...metricsData};
       saveAllData();
+      saveTargets(selectedStore, newTargets);
+      storeTargets = {...newTargets};
       renderTable();
+    };
+
+    resetTargetsBtn.onclick = function() {
+      if (!selectedStore) return;
+      resetStoreTargets(selectedStore);
+      storeTargets = loadTargets(selectedStore);
+      metrics.forEach(metric => {
+        if (metricsForm.elements["target_" + metric]) {
+          metricsForm.elements["target_" + metric].value = defaultTargets[metric] || "";
+        }
+      });
     };
 
     backButton.onclick = function() {
@@ -508,9 +676,11 @@
 
     backToMetricsBtn.onclick = function() {
       loadAllData();
+      storeTargets = loadTargets(selectedStore);
       let prevValues = (allData[selectedStore] && allData[selectedStore][selectedWeek]) || {};
       metrics.forEach(metric => {
         metricsForm.elements[metric].value = prevValues[metric] || "";
+        metricsForm.elements["target_" + metric].value = storeTargets[metric] || defaultTargets[metric] || "";
       });
       tableSection.classList.add('hidden');
       metricsSection.classList.remove('hidden');
@@ -528,6 +698,10 @@
           delete allData[selectedStore];
           saveAllData();
         }
+        let raw = localStorage.getItem(TARGETS_KEY);
+        let allTargets = raw ? JSON.parse(raw) : {};
+        delete allTargets[getStoreTargetKey(selectedStore)];
+        localStorage.setItem(TARGETS_KEY, JSON.stringify(allTargets));
         selectionSection.classList.remove('hidden');
         metricsSection.classList.add('hidden');
         tableSection.classList.add('hidden');
@@ -543,20 +717,83 @@
     };
 
     printTableBtn.onclick = function() {
-      html2canvas(tableSection).then(function(canvas) {
+      tableWrapper.style.maxWidth = "900px";
+      tableWrapper.style.margin = "0 auto";
+      html2canvas(tableSection, {
+        scale: 2,
+        backgroundColor: "#fff",
+        useCORS: true,
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: document.body.scrollWidth,
+        windowHeight: document.body.scrollHeight,
+      }).then(function(canvas) {
+        tableWrapper.style.maxWidth = "";
+        tableWrapper.style.margin = "";
         let win = window.open('', '_blank');
-        win.document.body.style.margin = "0";
-        win.document.body.style.background = "#fff";
-        win.document.body.appendChild(canvas);
-        win.document.title = "Print Table";
-        setTimeout(() => {
-          win.print();
-        }, 500);
+        win.document.write(`
+          <html>
+          <head>
+            <title>Print Table</title>
+            <style>
+              html, body {
+                margin: 0;
+                padding: 0;
+                background: #fff;
+                width: 100vw;
+                height: 100vh;
+              }
+              .centered-print {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100vw;
+                height: 100vh;
+                box-sizing: border-box;
+              }
+              canvas {
+                display: block;
+                max-width: 100vw;
+                max-height: 100vh;
+                width: auto !important;
+                height: auto !important;
+                background: #fff;
+                margin: auto;
+              }
+              @media print {
+                html, body { background: #fff !important; }
+                .centered-print { width: 100vw; height: 100vh; }
+                canvas { 
+                  max-width: 95vw !important;
+                  max-height: 95vh !important;
+                  width: auto !important;
+                  height: auto !important;
+                  margin: auto !important;
+                  display: block !important;
+                  background: #fff !important;
+                }
+                body { margin: 0 !important; }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="centered-print" id="canvasContainer"></div>
+          </body>
+          </html>
+        `);
+        win.document.close();
+        win.onload = function() {
+          win.document.getElementById('canvasContainer').appendChild(canvas);
+          setTimeout(() => {
+            win.print();
+          }, 400);
+        };
       });
     };
 
     function renderTable() {
       loadAllData();
+      storeTargets = loadTargets(selectedStore);
       let locWeeks = allData[selectedStore] || {};
       tableTitle.textContent = `Store: ${selectedStore}`;
       let now = new Date();
@@ -565,8 +802,25 @@
         hour: '2-digit', minute: '2-digit'
       });
       printMeta.textContent = `Area: ${selectedArea} | Region: ${selectedRegion} | District: ${selectedDistrict} | Store: ${selectedStore} | Printed: ${dtStr}`;
+
+      // Table headers, first column is store name
+      let headerHTML = `
+        <th>${selectedStore ? selectedStore : "Metric"}</th>
+        <th>Target</th>
+        <th>Week 1</th>
+        <th>Week 2</th>
+        <th>Week 3</th>
+        <th>Week 4</th>
+        <th>Week 5</th>
+      `;
+      metricsHeaderRow.innerHTML = headerHTML;
+
+      // CS Leaderboard row merged across all columns
+      leaderboardRow.innerHTML = `<td colspan="7" style="background:#DC008C;color:#111;font-weight:700;font-size:1.03em;letter-spacing:1.5px;text-align:center;border:none;">CS Leaderboard</td>`;
+
       metricsTable.innerHTML = metrics.map(metric => {
         let row = `<td>${metric}</td>`;
+        row += `<td class="target-cell">${storeTargets[metric] || defaultTargets[metric] || ""}</td>`;
         for(let i=1; i<=5; i++) {
           row += `<td>${locWeeks[i] && locWeeks[i][metric] ? locWeeks[i][metric] : ""}</td>`;
         }
@@ -576,8 +830,8 @@
         let trs = metricsTable.querySelectorAll("tr");
         trs.forEach((tr, idx) => {
           let tds = tr.querySelectorAll("td");
-          if (tds.length === 6) {
-            let labels = ["Metric", "Week 1", "Week 2", "Week 3", "Week 4", "Week 5"];
+          if (tds.length === 7) {
+            let labels = [selectedStore ? selectedStore : "Metric", "Target", "Week 1", "Week 2", "Week 3", "Week 4", "Week 5"];
             tds.forEach((td, i) => {
               td.setAttribute("data-label", labels[i]);
               if (i !== 0) td.style.fontWeight = "400";
