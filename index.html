@@ -39,6 +39,17 @@
       letter-spacing: 1px;
       font-weight: 700;
     }
+    .section-title {
+      font-size: 1.2em;
+      font-weight: 700;
+      text-align: center;
+      margin: 0.6em 0 1.1em 0;
+      background: var(--leaderboard-bg);
+      color: var(--leaderboard-color);
+      border-radius: var(--primary-radius);
+      padding: 0.6em;
+      letter-spacing: 1px;
+    }
     form {
       background: #fff;
       padding: 1em 0.7em 1em 0.7em;
@@ -392,6 +403,7 @@
 
   <!-- Data Entry Page -->
   <div id="metricsSection" class="hidden">
+    <div class="section-title" id="metricsSectionTitle">CS Leaderboard</div>
     <form id="metricsForm" autocomplete="off">
       <div class="form-metrics"></div>
       <button type="button" class="reset-targets-btn" id="resetTargetsBtn">Reset Targets to Default</button>
@@ -488,6 +500,7 @@
     const storeDropdown = document.getElementById('storeDropdown');
     const weekSelect = document.getElementById('weekSelect');
     const metricsSection = document.getElementById('metricsSection');
+    const metricsSectionTitle = document.getElementById('metricsSectionTitle');
     const metricsForm = document.getElementById('metricsForm');
     const formMetricsDiv = metricsForm.querySelector('.form-metrics');
     const resetTargetsBtn = document.getElementById('resetTargetsBtn');
