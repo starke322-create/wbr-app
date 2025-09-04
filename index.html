@@ -15,6 +15,10 @@
       --target-entry-color: #d32f2f;
       --leaderboard-bg: #DC008C;
       --leaderboard-color: #111;
+      --metric-grey: #ededed;
+      --store-black: #111;
+      --store-white: #fff;
+      --white: #fff;
     }
     html, body {
       margin: 0;
@@ -202,6 +206,7 @@
       background: #fff;
       font-size: 0.97em;
       min-width: 530px;
+      table-layout: fixed;
     }
     th, td {
       border: 1px solid var(--primary-border);
@@ -209,12 +214,27 @@
       text-align: center;
       vertical-align: middle;
       word-break: break-word;
+      /* Ensures fixed width for all columns */
     }
     th {
       background: #ffebee;
       color: var(--primary-accent);
       font-size: 1em;
       font-weight: 700;
+    }
+    /* Metric name cells & pre-CS row */
+    .metric-cell, .pre-cs-row td {
+      background: var(--metric-grey) !important;
+      color: #222 !important;
+      font-weight: 600;
+    }
+    /* Store name cell */
+    .store-cell {
+      background: var(--store-black) !important;
+      color: var(--store-white) !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.7px;
+      font-size: 1em;
     }
     .target-cell {
       background: var(--target-highlight) !important;
@@ -230,6 +250,37 @@
       text-align: center;
       border: none !important;
       padding: 0.8em 0 !important;
+    }
+    /* Top merged row */
+    .top-title-row td {
+      background: var(--leaderboard-bg) !important;
+      color: var(--leaderboard-color) !important;
+      font-weight: 700;
+      font-size: 2.4em !important;
+      letter-spacing: 1.5px;
+      text-align: center;
+      border: none !important;
+      padding: 1em 0 !important;
+      border-radius: var(--primary-radius) var(--primary-radius) 0 0;
+    }
+    /* Merged white row above CS Leaderboard */
+    .pre-cs-row td {
+      background: var(--white) !important;
+      color: #222 !important;
+      border: none !important;
+      font-size: 1em;
+      padding: 0.6em 0 !important;
+    }
+    /* Set width for columns 2-7 */
+    th:not(:first-child), td:not(:first-child) {
+      width: 110px;
+      max-width: 110px;
+      min-width: 110px;
+    }
+    .store-cell {
+      width: auto !important;
+      min-width: 90px !important;
+      max-width: 180px !important;
     }
     @media (max-width: 700px) {
       body {
@@ -274,17 +325,21 @@
         color: #555;
       }
       tr td:first-child {
-        background: #ffebee;
+        background: var(--metric-grey) !important;
         border-radius: var(--primary-radius) var(--primary-radius) 0 0;
         font-weight: 700;
         padding-left: 1em;
-        color: var(--primary-accent);
+        color: #222 !important;
         font-size: 1em;
       }
       .leaderboard-row td {
         padding-left: 0 !important;
         text-align: center !important;
         font-size: 1em !important;
+      }
+      .store-cell {
+        background: var(--store-black) !important;
+        color: var(--store-white) !important;
       }
     }
     @media (max-width: 430px) {
@@ -307,7 +362,7 @@
         max-width: none;
         padding: 0;
       }
-      h1, #metricsSection, .actions, .form-metrics, #backToMetrics, #clearAllData, #printTableBtn, #selectionSection, #metricsForm, button, .actions, .hidden, .reset-targets-btn {
+      h1, #metricsSection, #gapsSection, #formsSection, .actions, .form-metrics, .form-gaps, .form-forms, #backToMetrics, #clearAllData, #printTableBtn, #selectionSection, #metricsForm, #gapsForm, #formsForm, button, .actions, .hidden, .reset-targets-btn {
         display: none !important;
       }
       #tableSection, #tableTitle, #printMeta, .table-container, table, thead, tbody, tr, th, td {
@@ -350,6 +405,23 @@
         letter-spacing: 1.5px !important;
         text-align: center !important;
         padding: 0.7em 0 !important;
+      }
+      .metric-cell, .pre-cs-row td {
+        background: #ededed !important;
+        color: #222 !important;
+        font-weight: 600 !important;
+      }
+      .store-cell {
+        background: #111 !important;
+        color: #fff !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.7px !important;
+      }
+      .top-title-row td {
+        background: #DC008C !important;
+        color: #111 !important;
+        font-weight: 700 !important;
+        font-size: 2.4em !important;
       }
       @page {
         size: portrait;
@@ -401,15 +473,41 @@
     </form>
   </div>
 
-  <!-- Data Entry Page -->
+  <!-- CS Leaderboard Data Entry Page -->
   <div id="metricsSection" class="hidden">
-    <div class="section-title" id="metricsSectionTitle">CS Leaderboard</div>
+    <div class="section-title">CS Leaderboard</div>
     <form id="metricsForm" autocomplete="off">
       <div class="form-metrics"></div>
       <button type="button" class="reset-targets-btn" id="resetTargetsBtn">Reset Targets to Default</button>
       <div class="actions">
         <button type="button" id="backButton">Back</button>
-        <button type="submit" id="nextBtn">Next</button>
+        <button type="button" id="nextToGapsBtn">Next</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Current Gaps Data Entry Page -->
+  <div id="gapsSection" class="hidden">
+    <div class="section-title">Current Gaps</div>
+    <form id="gapsForm" autocomplete="off">
+      <div class="form-gaps"></div>
+      <button type="button" class="reset-targets-btn" id="resetGapsTargetsBtn">Reset Targets to Default</button>
+      <div class="actions">
+        <button type="button" id="backToLeaderboardBtn">Back</button>
+        <button type="button" id="nextToFormsBtn">Next</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Form Usage Data Entry Page -->
+  <div id="formsSection" class="hidden">
+    <div class="section-title">Form Usage (previous week)</div>
+    <form id="formsForm" autocomplete="off">
+      <div class="form-forms"></div>
+      <button type="button" class="reset-targets-btn" id="resetFormsTargetsBtn">Reset Targets to Default</button>
+      <div class="actions">
+        <button type="button" id="backToGapsBtn">Back</button>
+        <button type="submit" id="nextBtnForms">Next</button>
       </div>
     </form>
   </div>
@@ -421,14 +519,18 @@
     <div class="table-container" id="tableWrapper">
       <table id="mainMetricsTable">
         <thead>
-          <tr class="header-row" id="metricsHeaderRow">
-            <!-- Headers rendered dynamically -->
+          <tr class="top-title-row">
+            <td colspan="7">Performance & Forms</td>
           </tr>
-          <tr class="leaderboard-row" id="leaderboardRow">
-            <!-- CS Leaderboard row rendered dynamically -->
+          <tr class="pre-cs-row">
+            <td colspan="7"></td>
           </tr>
+          <tr class="header-row" id="metricsHeaderRow"></tr>
+          <tr class="leaderboard-row" id="leaderboardRow"></tr>
         </thead>
         <tbody id="metricsTable"></tbody>
+        <tbody id="gapsTable"></tbody>
+        <tbody id="formsTable"></tbody>
       </table>
     </div>
     <div class="actions" id="tableActions">
@@ -439,7 +541,7 @@
   </div>
 
   <script>
-    // Metric definitions, formatters, and default targets
+    // CS Leaderboard metrics and targets
     const metrics = [
       "Net Trending GP", "Current Rank", "Current Quintile", "Bottom Metrics",
       "GP % Target", "GP per HR", "Voice", "BTS", "TFB", "VAF",
@@ -476,6 +578,53 @@
       "AAL Attainment": "100%"
     };
 
+    // Current Gaps metrics and targets
+    const gapsMetrics = [
+      "Voice", "BTS", "TFB", "VAF", "Accessory Qty"
+    ];
+    const gapsCellTableFormatters = {
+      "Voice": v => formatInteger(v),
+      "BTS": v => formatInteger(v),
+      "TFB": v => formatInteger(v),
+      "VAF": v => formatDollarNoCents(v),
+      "Accessory Qty": v => formatDollarNoCents(v)
+    };
+    const gapsFormatters = {
+      "Voice": v => v,
+      "BTS": v => v,
+      "TFB": v => v,
+      "VAF": v => v,
+      "Accessory Qty": v => v
+    };
+    const defaultGapsTargets = {
+      "Voice": "125%",
+      "BTS": "125%",
+      "TFB": "125%",
+      "VAF": "$19",
+      "Accessory Qty": "125%"
+    };
+
+    // Form Usage metrics and targets
+    const formsMetrics = [
+      "Pre-Connects", "Pay Connects", "CSWays", "Social Media", "Meeting Minutes", "Paylocity Entries"
+    ];
+    const formsFormatters = {
+      "Pre-Connects": v => v,
+      "Pay Connects": v => v,
+      "CSWays": v => v,
+      "Social Media": v => v,
+      "Meeting Minutes": v => v,
+      "Paylocity Entries": v => v
+    };
+    const defaultFormsTargets = {
+      "Pre-Connects": "1 - rep/day",
+      "Pay Connects": "1 - rep/week",
+      "CSWays": "2 per day",
+      "Social Media": "1 per 100",
+      "Meeting Minutes": "1 weekly",
+      "Paylocity Entries": "if needed"
+    };
+
     function formatDollarNoCents(val) {
       let n = parseFloat(val.replace(/[^0-9.\-]/g, "")); if (isNaN(n)) return "";
       return "$" + Math.round(n).toLocaleString();
@@ -490,6 +639,11 @@
       if (n <= 1 && n !== 0) n = n*100;
       return Math.round(n) + "%";
     }
+    function formatInteger(val) {
+      let n = parseFloat(val.replace(/[^0-9.\-]/g, ""));
+      if (isNaN(n)) return "";
+      return Math.round(n).toString();
+    }
 
     // Elements
     const selectionSection = document.getElementById('selectionSection');
@@ -499,20 +653,43 @@
     const districtDropdown = document.getElementById('districtDropdown');
     const storeDropdown = document.getElementById('storeDropdown');
     const weekSelect = document.getElementById('weekSelect');
+
+    // CS Leaderboard section
     const metricsSection = document.getElementById('metricsSection');
-    const metricsSectionTitle = document.getElementById('metricsSectionTitle');
     const metricsForm = document.getElementById('metricsForm');
     const formMetricsDiv = metricsForm.querySelector('.form-metrics');
     const resetTargetsBtn = document.getElementById('resetTargetsBtn');
     const backButton = document.getElementById('backButton');
-    const nextBtn = document.getElementById('nextBtn');
+    const nextToGapsBtn = document.getElementById('nextToGapsBtn');
+
+    // Current Gaps section
+    const gapsSection = document.getElementById('gapsSection');
+    const gapsForm = document.getElementById('gapsForm');
+    const formGapsDiv = gapsForm.querySelector('.form-gaps');
+    const resetGapsTargetsBtn = document.getElementById('resetGapsTargetsBtn');
+    const backToLeaderboardBtn = document.getElementById('backToLeaderboardBtn');
+    const nextToFormsBtn = document.getElementById('nextToFormsBtn');
+
+    // Forms Usage section
+    const formsSection = document.getElementById('formsSection');
+    const formsForm = document.getElementById('formsForm');
+    const formFormsDiv = formsForm.querySelector('.form-forms');
+    const resetFormsTargetsBtn = document.getElementById('resetFormsTargetsBtn');
+    const backToGapsBtn = document.getElementById('backToGapsBtn');
+    const nextBtnForms = document.getElementById('nextBtnForms');
+
+    // Table section
     const tableSection = document.getElementById('tableSection');
     const tableTitle = document.getElementById('tableTitle');
     const printMeta = document.getElementById('printMeta');
-    const metricsTable = document.getElementById('metricsTable');
     const mainMetricsTable = document.getElementById('mainMetricsTable');
     const metricsHeaderRow = document.getElementById('metricsHeaderRow');
     const leaderboardRow = document.getElementById('leaderboardRow');
+    const preCSRow = mainMetricsTable.querySelector('.pre-cs-row');
+    const topTitleRow = mainMetricsTable.querySelector('.top-title-row');
+    const metricsTable = document.getElementById('metricsTable');
+    const gapsTable = document.getElementById('gapsTable');
+    const formsTable = document.getElementById('formsTable');
     const backToMetricsBtn = document.getElementById('backToMetrics');
     const clearAllDataBtn = document.getElementById('clearAllData');
     const printTableBtn = document.getElementById('printTableBtn');
@@ -527,12 +704,23 @@
     let metricsData = {};
     let allData = {};
     let storeTargets = {};
+    let gapsData = {};
+    let allGapsData = {};
+    let gapsTargets = {};
+    let formsData = {};
+    let allFormsData = {};
+    let formsTargets = {};
     const STORAGE_KEY = "locationPerformanceData";
     const TARGETS_KEY = "locationTargetData";
+    const GAPS_STORAGE_KEY = "locationGapsData";
+    const GAPS_TARGETS_KEY = "locationGapsTargetData";
+    const FORMS_STORAGE_KEY = "locationFormsData";
+    const FORMS_TARGETS_KEY = "locationFormsTargetData";
 
     function getStoreTargetKey(store) {
       return store ? store : "default";
     }
+    // Leaderboard
     function loadTargets(store) {
       let raw = localStorage.getItem(TARGETS_KEY);
       let allTargets = raw ? JSON.parse(raw) : {};
@@ -546,6 +734,58 @@
     }
     function resetStoreTargets(store) {
       saveTargets(store, {...defaultTargets});
+    }
+    // Gaps
+    function loadGapsTargets(store) {
+      let raw = localStorage.getItem(GAPS_TARGETS_KEY);
+      let allTargets = raw ? JSON.parse(raw) : {};
+      return allTargets[getStoreTargetKey(store)] || {...defaultGapsTargets};
+    }
+    function saveGapsTargets(store, targets) {
+      let raw = localStorage.getItem(GAPS_TARGETS_KEY);
+      let allTargets = raw ? JSON.parse(raw) : {};
+      allTargets[getStoreTargetKey(store)] = {...targets};
+      localStorage.setItem(GAPS_TARGETS_KEY, JSON.stringify(allTargets));
+    }
+    function resetStoreGapsTargets(store) {
+      saveGapsTargets(store, {...defaultGapsTargets});
+    }
+    // Forms
+    function loadFormsTargets(store) {
+      let raw = localStorage.getItem(FORMS_TARGETS_KEY);
+      let allTargets = raw ? JSON.parse(raw) : {};
+      return allTargets[getStoreTargetKey(store)] || {...defaultFormsTargets};
+    }
+    function saveFormsTargets(store, targets) {
+      let raw = localStorage.getItem(FORMS_TARGETS_KEY);
+      let allTargets = raw ? JSON.parse(raw) : {};
+      allTargets[getStoreTargetKey(store)] = {...targets};
+      localStorage.setItem(FORMS_TARGETS_KEY, JSON.stringify(allTargets));
+    }
+    function resetStoreFormsTargets(store) {
+      saveFormsTargets(store, {...defaultFormsTargets});
+    }
+
+    function loadAllData() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      allData = raw ? JSON.parse(raw) : {};
+    }
+    function saveAllData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
+    }
+    function loadAllGapsData() {
+      const raw = localStorage.getItem(GAPS_STORAGE_KEY);
+      allGapsData = raw ? JSON.parse(raw) : {};
+    }
+    function saveAllGapsData() {
+      localStorage.setItem(GAPS_STORAGE_KEY, JSON.stringify(allGapsData));
+    }
+    function loadAllFormsData() {
+      const raw = localStorage.getItem(FORMS_STORAGE_KEY);
+      allFormsData = raw ? JSON.parse(raw) : {};
+    }
+    function saveAllFormsData() {
+      localStorage.setItem(FORMS_STORAGE_KEY, JSON.stringify(allFormsData));
     }
 
     function populateAreaDropdown() {
@@ -601,14 +841,7 @@
       selectedStore = this.value;
     });
 
-    function loadAllData() {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      allData = raw ? JSON.parse(raw) : {};
-    }
-    function saveAllData() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
-    }
-
+    // --- Section 1: Leaderboard ---
     selectionForm.onsubmit = function(e) {
       e.preventDefault();
       selectedArea = areaDropdown.value;
@@ -638,11 +871,15 @@
       `).join('');
       selectionSection.classList.add('hidden');
       metricsSection.classList.remove('hidden');
+      gapsSection.classList.add('hidden');
+      formsSection.classList.add('hidden');
       tableSection.classList.add('hidden');
     };
 
     metricsForm.onsubmit = function(e) {
       e.preventDefault();
+    };
+    nextToGapsBtn.onclick = function() {
       metricsData = {};
       let newTargets = {};
       metrics.forEach(metric => {
@@ -659,9 +896,102 @@
       saveAllData();
       saveTargets(selectedStore, newTargets);
       storeTargets = {...newTargets};
+
+      // Section 2: Current Gaps
+      loadAllGapsData();
+      gapsTargets = loadGapsTargets(selectedStore);
+      let prevGapsValues = (allGapsData[selectedStore] && allGapsData[selectedStore][selectedWeek]) || {};
+      formGapsDiv.innerHTML = gapsMetrics.map(metric => `
+        <div class="metric-row">
+          <span class="metric-label">${metric}:</span>
+          <div class="entry-row">
+            <div class="entry-col">
+              <span class="entry-label">Target</span>
+              <input class="target-input" type="text" name="target_gaps_${metric}" value="${gapsTargets[metric] || defaultGapsTargets[metric] || ""}" autocomplete="off" />
+            </div>
+            <div class="entry-col">
+              <span class="entry-label">Current</span>
+              <input class="current-input" type="text" name="gaps_${metric}" required value="${prevGapsValues[metric] || ""}" autocomplete="off" />
+            </div>
+          </div>
+        </div>
+      `).join('');
+      metricsSection.classList.add('hidden');
+      gapsSection.classList.remove('hidden');
+      formsSection.classList.add('hidden');
+      tableSection.classList.add('hidden');
+    };
+
+    // --- Section 2: Current Gaps ---
+    gapsForm.onsubmit = function(e) {
+      e.preventDefault();
+    };
+    nextToFormsBtn.onclick = function() {
+      gapsData = {};
+      let newGapsTargets = {};
+      gapsMetrics.forEach(metric => {
+        let raw = gapsForm.elements["gaps_" + metric].value;
+        gapsData[metric] = gapsFormatters[metric]
+          ? gapsFormatters[metric](raw)
+          : raw;
+        let targetRaw = gapsForm.elements["target_gaps_" + metric].value;
+        newGapsTargets[metric] = targetRaw;
+      });
+      loadAllGapsData();
+      if (!allGapsData[selectedStore]) allGapsData[selectedStore] = {};
+      allGapsData[selectedStore][selectedWeek] = {...gapsData};
+      saveAllGapsData();
+      saveGapsTargets(selectedStore, newGapsTargets);
+      gapsTargets = {...newGapsTargets};
+
+      // Section 3: Form Usage
+      loadAllFormsData();
+      formsTargets = loadFormsTargets(selectedStore);
+      let prevFormsValues = (allFormsData[selectedStore] && allFormsData[selectedStore][selectedWeek]) || {};
+      formFormsDiv.innerHTML = formsMetrics.map(metric => `
+        <div class="metric-row">
+          <span class="metric-label">${metric}:</span>
+          <div class="entry-row">
+            <div class="entry-col">
+              <span class="entry-label">Target</span>
+              <input class="target-input" type="text" name="target_forms_${metric}" value="${formsTargets[metric] || defaultFormsTargets[metric] || ""}" autocomplete="off" />
+            </div>
+            <div class="entry-col">
+              <span class="entry-label">Current</span>
+              <input class="current-input" type="text" name="forms_${metric}" required value="${prevFormsValues[metric] || ""}" autocomplete="off" />
+            </div>
+          </div>
+        </div>
+      `).join('');
+      gapsSection.classList.add('hidden');
+      formsSection.classList.remove('hidden');
+      tableSection.classList.add('hidden');
+      metricsSection.classList.add('hidden');
+    };
+
+    // --- Section 3: Form Usage ---
+    formsForm.onsubmit = function(e) {
+      e.preventDefault();
+      formsData = {};
+      let newFormsTargets = {};
+      formsMetrics.forEach(metric => {
+        let raw = formsForm.elements["forms_" + metric].value;
+        formsData[metric] = formsFormatters[metric]
+          ? formsFormatters[metric](raw)
+          : raw;
+        let targetRaw = formsForm.elements["target_forms_" + metric].value;
+        newFormsTargets[metric] = targetRaw;
+      });
+      loadAllFormsData();
+      if (!allFormsData[selectedStore]) allFormsData[selectedStore] = {};
+      allFormsData[selectedStore][selectedWeek] = {...formsData};
+      saveAllFormsData();
+      saveFormsTargets(selectedStore, newFormsTargets);
+      formsTargets = {...newFormsTargets};
       renderTable();
     };
 
+    // --- Reset buttons ---
     resetTargetsBtn.onclick = function() {
       if (!selectedStore) return;
       resetStoreTargets(selectedStore);
@@ -673,9 +1003,33 @@
       });
     };
 
+    resetGapsTargetsBtn.onclick = function() {
+      if (!selectedStore) return;
+      resetStoreGapsTargets(selectedStore);
+      gapsTargets = loadGapsTargets(selectedStore);
+      gapsMetrics.forEach(metric => {
+        if (gapsForm.elements["target_gaps_" + metric]) {
+          gapsForm.elements["target_gaps_" + metric].value = defaultGapsTargets[metric] || "";
+        }
+      });
+    };
+
+    resetFormsTargetsBtn.onclick = function() {
+      if (!selectedStore) return;
+      resetStoreFormsTargets(selectedStore);
+      formsTargets = loadFormsTargets(selectedStore);
+      formsMetrics.forEach(metric => {
+        if (formsForm.elements["target_forms_" + metric]) {
+          formsForm.elements["target_forms_" + metric].value = defaultFormsTargets[metric] || "";
+        }
+      });
+    };
+
     backButton.onclick = function() {
       selectionSection.classList.remove('hidden');
       metricsSection.classList.add('hidden');
+      gapsSection.classList.add('hidden');
+      formsSection.classList.add('hidden');
       tableSection.classList.add('hidden');
       areaDropdown.value = selectedArea;
       areaDropdown.dispatchEvent(new Event('change'));
@@ -687,7 +1041,7 @@
       weekSelect.value = selectedWeek;
     };
 
-    backToMetricsBtn.onclick = function() {
+    backToLeaderboardBtn.onclick = function() {
       loadAllData();
       storeTargets = loadTargets(selectedStore);
       let prevValues = (allData[selectedStore] && allData[selectedStore][selectedWeek]) || {};
@@ -695,8 +1049,40 @@
         metricsForm.elements[metric].value = prevValues[metric] || "";
         metricsForm.elements["target_" + metric].value = storeTargets[metric] || defaultTargets[metric] || "";
       });
-      tableSection.classList.add('hidden');
+      gapsSection.classList.add('hidden');
       metricsSection.classList.remove('hidden');
+      selectionSection.classList.add('hidden');
+      tableSection.classList.add('hidden');
+      formsSection.classList.add('hidden');
+    };
+
+    backToGapsBtn.onclick = function() {
+      loadAllGapsData();
+      gapsTargets = loadGapsTargets(selectedStore);
+      let prevGapsValues = (allGapsData[selectedStore] && allGapsData[selectedStore][selectedWeek]) || {};
+      gapsMetrics.forEach(metric => {
+        gapsForm.elements["gaps_" + metric].value = prevGapsValues[metric] || "";
+        gapsForm.elements["target_gaps_" + metric].value = gapsTargets[metric] || defaultGapsTargets[metric] || "";
+      });
+      formsSection.classList.add('hidden');
+      gapsSection.classList.remove('hidden');
+      metricsSection.classList.add('hidden');
+      selectionSection.classList.add('hidden');
+      tableSection.classList.add('hidden');
+    };
+
+    backToMetricsBtn.onclick = function() {
+      loadAllFormsData();
+      formsTargets = loadFormsTargets(selectedStore);
+      let prevFormsValues = (allFormsData[selectedStore] && allFormsData[selectedStore][selectedWeek]) || {};
+      formsMetrics.forEach(metric => {
+        formsForm.elements["forms_" + metric].value = prevFormsValues[metric] || "";
+        formsForm.elements["target_forms_" + metric].value = formsTargets[metric] || defaultFormsTargets[metric] || "";
+      });
+      tableSection.classList.add('hidden');
+      formsSection.classList.remove('hidden');
+      gapsSection.classList.add('hidden');
+      metricsSection.classList.add('hidden');
       selectionSection.classList.add('hidden');
     };
 
@@ -715,8 +1101,31 @@
         let allTargets = raw ? JSON.parse(raw) : {};
         delete allTargets[getStoreTargetKey(selectedStore)];
         localStorage.setItem(TARGETS_KEY, JSON.stringify(allTargets));
+
+        loadAllGapsData();
+        if (allGapsData[selectedStore]) {
+          delete allGapsData[selectedStore];
+          saveAllGapsData();
+        }
+        let rawGaps = localStorage.getItem(GAPS_TARGETS_KEY);
+        let allGapsTargets = rawGaps ? JSON.parse(rawGaps) : {};
+        delete allGapsTargets[getStoreTargetKey(selectedStore)];
+        localStorage.setItem(GAPS_TARGETS_KEY, JSON.stringify(allGapsTargets));
+
+        loadAllFormsData();
+        if (allFormsData[selectedStore]) {
+          delete allFormsData[selectedStore];
+          saveAllFormsData();
+        }
+        let rawForms = localStorage.getItem(FORMS_TARGETS_KEY);
+        let allFormsTargets = rawForms ? JSON.parse(rawForms) : {};
+        delete allFormsTargets[getStoreTargetKey(selectedStore)];
+        localStorage.setItem(FORMS_TARGETS_KEY, JSON.stringify(allFormsTargets));
+
         selectionSection.classList.remove('hidden');
         metricsSection.classList.add('hidden');
+        gapsSection.classList.add('hidden');
+        formsSection.classList.add('hidden');
         tableSection.classList.add('hidden');
         areaDropdown.value = "";
         regionDropdown.innerHTML = '<option value="">--Select Region--</option>';
@@ -738,8 +1147,8 @@
         useCORS: true,
         scrollX: 0,
         scrollY: 0,
-        windowWidth: document.body.scrollWidth,
-        windowHeight: document.body.scrollHeight,
+        windowWidth: tableSection.scrollWidth,
+        windowHeight: tableSection.scrollHeight,
       }).then(function(canvas) {
         tableWrapper.style.maxWidth = "";
         tableWrapper.style.margin = "";
@@ -808,6 +1217,13 @@
       loadAllData();
       storeTargets = loadTargets(selectedStore);
       let locWeeks = allData[selectedStore] || {};
+      loadAllGapsData();
+      gapsTargets = loadGapsTargets(selectedStore);
+      let locGapsWeeks = allGapsData[selectedStore] || {};
+      loadAllFormsData();
+      formsTargets = loadFormsTargets(selectedStore);
+      let locFormsWeeks = allFormsData[selectedStore] || {};
+
       tableTitle.textContent = `Store: ${selectedStore}`;
       let now = new Date();
       let dtStr = now.toLocaleString(undefined, {
@@ -816,9 +1232,14 @@
       });
       printMeta.textContent = `Area: ${selectedArea} | Region: ${selectedRegion} | District: ${selectedDistrict} | Store: ${selectedStore} | Printed: ${dtStr}`;
 
+      // Top merged row
+      topTitleRow.innerHTML = `<td colspan="7">Performance & Forms</td>`;
+      // Pre-CS row (white fill, merged)
+      preCSRow.innerHTML = `<td colspan="7"></td>`;
+
       // Table headers, first column is store name
       let headerHTML = `
-        <th>${selectedStore ? selectedStore : "Metric"}</th>
+        <th class="store-cell">${selectedStore ? selectedStore : "Metric"}</th>
         <th>Target</th>
         <th>Week 1</th>
         <th>Week 2</th>
@@ -827,20 +1248,50 @@
         <th>Week 5</th>
       `;
       metricsHeaderRow.innerHTML = headerHTML;
-
-      // CS Leaderboard row merged across all columns
       leaderboardRow.innerHTML = `<td colspan="7" style="background:#DC008C;color:#111;font-weight:700;font-size:1.03em;letter-spacing:1.5px;text-align:center;border:none;">CS Leaderboard</td>`;
 
+      // CS Leaderboard table body
       metricsTable.innerHTML = metrics.map(metric => {
-        let row = `<td>${metric}</td>`;
+        let row = `<td class="metric-cell">${metric}</td>`;
         row += `<td class="target-cell">${storeTargets[metric] || defaultTargets[metric] || ""}</td>`;
         for(let i=1; i<=5; i++) {
           row += `<td>${locWeeks[i] && locWeeks[i][metric] ? locWeeks[i][metric] : ""}</td>`;
         }
         return `<tr>${row}</tr>`;
       }).join('');
+      // Current Gaps table body with section row
+      let gapsSectionRow = `<tr class="leaderboard-row"><td colspan="7">Current Gaps</td></tr>`;
+      let gapsRows = gapsMetrics.map(metric => {
+        let row = `<td class="metric-cell">${metric}</td>`;
+        row += `<td class="target-cell">${gapsTargets[metric] || defaultGapsTargets[metric] || ""}</td>`;
+        for(let i=1; i<=5; i++) {
+          let cellValue = locGapsWeeks[i] && locGapsWeeks[i][metric] ? locGapsWeeks[i][metric] : "";
+          if (cellValue !== "") {
+            row += `<td>${gapsCellTableFormatters[metric] ? gapsCellTableFormatters[metric](cellValue) : cellValue}</td>`;
+          } else {
+            row += `<td></td>`;
+          }
+        }
+        return `<tr>${row}</tr>`;
+      }).join('');
+      gapsTable.innerHTML = gapsSectionRow + gapsRows;
+
+      // Form Usage table body with section row
+      let formsSectionRow = `<tr class="leaderboard-row"><td colspan="7">Form Usage (previous week)</td></tr>`;
+      let formsRows = formsMetrics.map(metric => {
+        let row = `<td class="metric-cell">${metric}</td>`;
+        row += `<td class="target-cell">${formsTargets[metric] || defaultFormsTargets[metric] || ""}</td>`;
+        for(let i=1; i<=5; i++) {
+          let cellValue = locFormsWeeks[i] && locFormsWeeks[i][metric] ? locFormsWeeks[i][metric] : "";
+          row += `<td>${cellValue}</td>`;
+        }
+        return `<tr>${row}</tr>`;
+      }).join('');
+      formsTable.innerHTML = formsSectionRow + formsRows;
+
+      // Mobile data-labels
       if (window.innerWidth <= 700) {
-        let trs = metricsTable.querySelectorAll("tr");
+        let trs = mainMetricsTable.querySelectorAll("tbody tr:not(.leaderboard-row)");
         trs.forEach((tr, idx) => {
           let tds = tr.querySelectorAll("td");
           if (tds.length === 7) {
@@ -854,6 +1305,8 @@
       }
       selectionSection.classList.add('hidden');
       metricsSection.classList.add('hidden');
+      gapsSection.classList.add('hidden');
+      formsSection.classList.add('hidden');
       tableSection.classList.remove('hidden');
     }
 
@@ -863,6 +1316,8 @@
 
     populateAreaDropdown();
     loadAllData();
+    loadAllGapsData();
+    loadAllFormsData();
   </script>
 </body>
 </html>
